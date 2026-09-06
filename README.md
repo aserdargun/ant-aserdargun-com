@@ -48,6 +48,10 @@ This slice covers the foundation, living colony, chemical behavior and a usable 
 
 Source repository: [aserdargun/ant-aserdargun-com](https://github.com/aserdargun/ant-aserdargun-com).
 
+Production address: [ANT on Azure](https://ambitious-pebble-0ec95b303.3.azurestaticapps.net).
+
 The static `dist/` artifact targets Azure Static Web Apps Free in West Europe, in `aserdargun subscription 2`, using `rg-ant-aserdargun-com` and `swa-ant-aserdargun-com`. Each build validates its entry assets and Worker, then generates `release.json` with the source commit and SHA-256 asset manifest. GitHub publication precedes Azure provisioning.
+
+Pushes to `main` run `.github/workflows/deploy-swa-ant-aserdargun-com.yml`. It installs locked dependencies, checks the scientific and browser contracts, and uploads the prebuilt artifact. Deployment is serialized and uses the repository secret `AZURE_STATIC_WEB_APPS_API_TOKEN_SWA_ANT_ASERDARGUN_COM`. No server runtime or paid Azure component is required.
 
 After deployment, verify the generated HTTPS hostname with `npm run verify:live -- <url>` and run the production browser suite with `PLAYWRIGHT_BASE_URL=<url> npm run test:e2e`. The live suite does not start local servers. Custom-domain binding is a separate publication step.

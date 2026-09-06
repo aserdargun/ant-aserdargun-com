@@ -1,0 +1,43 @@
+name: Deploy ANT to Azure Static Web Apps Free
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: swa-ant-aserdargun-com-production
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run validate
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - name: Deploy verified static artifact
+        id: azure
+        uses: Azure/static-web-apps-deploy@1a947af9992250f3bc2e68ad0754c0b0c11566c9 # v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_SWA_ANT_ASERDARGUN_COM }}
+          action: upload
+          app_location: dist
+          skip_app_build: true
+          output_location: ''
+      - name: Verify production release and assets
+        env:
+          DEPLOYED_URL: ${{ steps.azure.outputs.static_web_app_url }}
+        run: npm run verify:live -- "$DEPLOYED_URL" "$GITHUB_SHA"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: failure()
+        with:
+          name: ant-deployment-browser-failures
+          path: test-results/

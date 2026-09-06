@@ -9,7 +9,7 @@ Verified locally on 2026-09-06. This is the **first vertical slice**, not a decl
 - `npm run evidence`: three fixed seeds, paired food-sensing ablation, 6,000 ticks each, and separate headless population measurements. The preserved machine-readable result is [validation-evidence.json](validation-evidence.json).
 - Native desktop viewport 1536×1024 and mobile 390×844. EN/TR, pause/step/speed/reset, seed/new-seed, parameter changes, hypothesis retention, layers, selected-ant/follow/sensors/fit, run export/import and bad imports were exercised. A custom 240×180 imported world with 1,500 ants and out-of-slider-range values verifies numeric editing and automatic camera fitting against an actual rendered food pixel.
 - Axe WCAG 2 A/AA and 2.1 AA automated scans: **zero violations** on desktop and Turkish mobile. This is automated coverage, not a complete accessibility certification. Mobile horizontal overflow: zero. Reduced-motion starts paused; an ordinary first visit starts a living colony from tick zero.
-- Local preview on 4187 returns HTTP 200; its listener's working directory is this repository. The source checkout has no remote and no commits. Only local files were created.
+- Local preview on 4187 returns HTTP 200; its listener's working directory is this repository. Source is published at `aserdargun/ant-aserdargun-com`; cloud release identity is checked independently through `release.json` and the live verification commands below.
 
 ## Mandatory scientific contracts A–G
 
@@ -87,4 +87,15 @@ Above-the-fold copy review found only the recorded functional additions: editabl
 
 Resolved: equal-probe left-turn bias; Node/Chromium numerical divergence; accessible slider names; lost hypothesis after parameter restart; misleading clamped controls for valid imports; stale camera position/follow state for imported worlds; export files exceeding the replay cap. Independent kernel and final interface reviews found no remaining actionable issue in the reviewed fixes.
 
-Home chemical remains observational; returning navigation is idealized path integration. Recent events/history are bounded and are not a complete long-run event archive. Replay/export is capped at 100,000 ticks. Local hypothesis text is retained across parameter changes but is not stored inside the scientific run file. Synchronized A/B, the remaining curriculum, sandbox, calibrated species models and public release remain subsequent work.
+Home chemical remains observational; returning navigation is idealized path integration. Recent events/history are bounded and are not a complete long-run event archive. Replay/export is capped at 100,000 ticks. Local hypothesis text is retained across parameter changes but is not stored inside the scientific run file. Synchronized A/B, the remaining curriculum, sandbox and calibrated species models remain subsequent work.
+
+## Public release verification
+
+Target: `swa-ant-aserdargun-com`, resource group `rg-ant-aserdargun-com`, Free, West Europe, `aserdargun subscription 2`. The generated production hostname is `ambitious-pebble-0ec95b303.3.azurestaticapps.net`. The deployment workflow validates the artifact before upload and checks the live commit, all 19 public asset hashes, JavaScript/CSS/font MIME types and missing-asset 404 behavior afterward.
+
+```bash
+npm run verify:live -- https://ambitious-pebble-0ec95b303.3.azurestaticapps.net
+PLAYWRIGHT_BASE_URL=https://ambitious-pebble-0ec95b303.3.azurestaticapps.net npm run test:e2e
+```
+
+The live browser command runs the 10 production tests against Azure without starting local servers. Deployment completion additionally requires the Azure production environment to be `Ready` on `main`, a successful workflow for the current commit, matching local/remote/release SHAs, and a clean worktree. Custom-domain and DNS binding are outside this deployment.
