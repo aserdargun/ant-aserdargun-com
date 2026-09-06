@@ -1,0 +1,193 @@
+{
+  "versions": {
+    "schema": 1,
+    "simulation": "0.1.0",
+    "brain": "local-rule-1",
+    "world": "first-trail-1",
+    "experiment": "EXP-001@1",
+    "prng": "mulberry32-1",
+    "math": "portable-math-1"
+  },
+  "runtime": "v22.23.1",
+  "results": [
+    {
+      "seed": 58392041,
+      "signalGain": 1,
+      "ticks": 6000,
+      "metrics": {
+        "tick": 6000,
+        "delivered": 919,
+        "returning": 58,
+        "searching": 42,
+        "remaining": 9023,
+        "coverage": 76.14872648150518,
+        "firstDiscoveryTick": 281,
+        "meanTripDistance": 1554.2383025027204,
+        "throughput": 195,
+        "foodSignalMass": 90754.14479721276
+      },
+      "trail": {
+        "threshold": 10,
+        "connectedToFood": true,
+        "activeCells": 2220,
+        "activeAreaFraction": 0.13875,
+        "massFractionInActiveCells": 0.8518179646665978,
+        "connectedCells": 2219
+      },
+      "durationMs": 839.8067500000001,
+      "ticksPerSecond": 7144.500803309808
+    },
+    {
+      "seed": 58392041,
+      "signalGain": 0,
+      "ticks": 6000,
+      "metrics": {
+        "tick": 6000,
+        "delivered": 175,
+        "returning": 6,
+        "searching": 94,
+        "remaining": 9819,
+        "coverage": 98.1889159093818,
+        "firstDiscoveryTick": 281,
+        "meanTripDistance": 4828.857142857143,
+        "throughput": 30,
+        "foodSignalMass": 15300.901558783955
+      },
+      "trail": {
+        "threshold": 10,
+        "connectedToFood": false,
+        "activeCells": 88,
+        "activeAreaFraction": 0.0055,
+        "massFractionInActiveCells": 0.06780822930264636,
+        "connectedCells": 0
+      },
+      "durationMs": 768.086709,
+      "ticksPerSecond": 7811.618050013673
+    },
+    {
+      "seed": 7,
+      "signalGain": 1,
+      "ticks": 6000,
+      "metrics": {
+        "tick": 6000,
+        "delivered": 837,
+        "returning": 49,
+        "searching": 51,
+        "remaining": 9114,
+        "coverage": 77.99820811468065,
+        "firstDiscoveryTick": 281,
+        "meanTripDistance": 1710.2449223416966,
+        "throughput": 194,
+        "foodSignalMass": 84209.17212088511
+      },
+      "trail": {
+        "threshold": 10,
+        "connectedToFood": true,
+        "activeCells": 2269,
+        "activeAreaFraction": 0.1418125,
+        "massFractionInActiveCells": 0.8357896755902235,
+        "connectedCells": 2269
+      },
+      "durationMs": 821.7565420000001,
+      "ticksPerSecond": 7301.432593888616
+    },
+    {
+      "seed": 7,
+      "signalGain": 0,
+      "ticks": 6000,
+      "metrics": {
+        "tick": 6000,
+        "delivered": 170,
+        "returning": 9,
+        "searching": 91,
+        "remaining": 9821,
+        "coverage": 97.92013311148087,
+        "firstDiscoveryTick": 281,
+        "meanTripDistance": 5097.838235294118,
+        "throughput": 27,
+        "foodSignalMass": 17566.26080780543
+      },
+      "trail": {
+        "threshold": 10,
+        "connectedToFood": false,
+        "activeCells": 203,
+        "activeAreaFraction": 0.0126875,
+        "massFractionInActiveCells": 0.1473146320931221,
+        "connectedCells": 0
+      },
+      "durationMs": 757.2682910000003,
+      "ticksPerSecond": 7923.215683673724
+    },
+    {
+      "seed": 42,
+      "signalGain": 1,
+      "ticks": 6000,
+      "metrics": {
+        "tick": 6000,
+        "delivered": 927,
+        "returning": 23,
+        "searching": 77,
+        "remaining": 9050,
+        "coverage": 77.21745808268271,
+        "firstDiscoveryTick": 293,
+        "meanTripDistance": 1554.9029126213593,
+        "throughput": 198,
+        "foodSignalMass": 56207.89780184467
+      },
+      "trail": {
+        "threshold": 10,
+        "connectedToFood": true,
+        "activeCells": 2016,
+        "activeAreaFraction": 0.126,
+        "massFractionInActiveCells": 0.73721906508441,
+        "connectedCells": 2016
+      },
+      "durationMs": 810.0520420000003,
+      "ticksPerSecond": 7406.931516629642
+    },
+    {
+      "seed": 42,
+      "signalGain": 0,
+      "ticks": 6000,
+      "metrics": {
+        "tick": 6000,
+        "delivered": 175,
+        "returning": 9,
+        "searching": 91,
+        "remaining": 9816,
+        "coverage": 98.24651222321772,
+        "firstDiscoveryTick": 293,
+        "meanTripDistance": 4968.071428571428,
+        "throughput": 30,
+        "foodSignalMass": 16676.445991405093
+      },
+      "trail": {
+        "threshold": 10,
+        "connectedToFood": false,
+        "activeCells": 72,
+        "activeAreaFraction": 0.0045,
+        "massFractionInActiveCells": 0.04867632580820531,
+        "connectedCells": 0
+      },
+      "durationMs": 753.4647919999998,
+      "ticksPerSecond": 7963.212168246877
+    }
+  ],
+  "performanceResults": [
+    {
+      "population": 100,
+      "ticks": 1000,
+      "durationMs": 127.976541
+    },
+    {
+      "population": 1000,
+      "ticks": 1000,
+      "durationMs": 527.4052080000001
+    },
+    {
+      "population": 5000,
+      "ticks": 1000,
+      "durationMs": 2681.048499999999
+    }
+  ]
+}
