@@ -29,6 +29,8 @@ Observe the 100-ant colony, then select food/home/combined chemical layers. Paus
 
 English and Turkish interfaces are included. Fonts are bundled locally with their licenses. Simulation state lives in a Web Worker; React owns application controls, while a separate Canvas adapter draws snapshots. The pure TypeScript kernel also runs under Node.
 
+The **Learning guide** provides three short exercises: reading the first trail, comparing one parameter at equal tick budgets, and inspecting an individual ant. Each includes ordered observation steps, links back to the relevant controls and a question with a revealable explanation. Information buttons beside controls and metrics open keyboard- and touch-accessible definitions, model-specific examples and interpretation limits. The expandable glossary covers 26 terms in both languages. Reading the guide or opening a definition preserves the active run and parameter drafts.
+
 ## Scientific contract
 
 - Seeded Mulberry32, stable step ordering and versioned portable math.
@@ -42,7 +44,7 @@ English and Turkish interfaces are included. Fonts are bundled locally with thei
 
 [Assessment](docs/ASSESSMENT.md) · [Product](docs/PRODUCT.md) · [Architecture](docs/ARCHITECTURE.md) · [Simulation equations](docs/SIMULATION.md) · [Experiments](docs/EXPERIMENTS.md) · [Metric definitions](docs/METRICS.md) · [Research](docs/RESEARCH.md)
 
-This slice covers the foundation, living colony, chemical behavior and a usable visual instrument. EXP-002–010, synchronized A/B comparison, richer guided interpretation and sandbox editing are subsequent milestones. ANT remains independently runnable; the SWI relationship is a conceptual link, not an implementation dependency.
+This slice covers the foundation, living colony, chemical behavior, guided interpretation and a usable visual instrument. EXP-002–010, synchronized A/B comparison and sandbox editing are subsequent milestones. ANT remains independently runnable; the SWI relationship is a conceptual link, not an implementation dependency.
 
 ## Publication
 

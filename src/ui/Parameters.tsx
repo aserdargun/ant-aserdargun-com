@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FlaskConical, RotateCw } from 'lucide-react';
 import type { SimulationConfig } from '../simulation/types';
 import type { Copy } from './i18n';
+import { TermHelp } from './TermHelp';
 
 export function Parameters({
   config,
@@ -47,6 +48,8 @@ export function Parameters({
       </section>
       <form
         className="rail-section parameters"
+        id="parameters"
+        tabIndex={-1}
         onSubmit={(e) => {
           e.preventDefault();
           onApply({
@@ -58,10 +61,11 @@ export function Parameters({
         }}
       >
         <h3>{t.parameters}</h3>
-        <label htmlFor="population">
-          <span>{t.population}</span>
+        <div className="parameter-label">
+          <label htmlFor="population">{t.population}</label>
+          <TermHelp term="population" label={t.population} />
           <output aria-hidden="true">{population}</output>
-        </label>
+        </div>
         <input
           id="population"
           type={numericPopulation ? 'number' : 'range'}
@@ -76,10 +80,11 @@ export function Parameters({
           <span>{numericPopulation ? '1' : '10'}</span>
           <span>{numericPopulation ? '5,000' : '1,000'}</span>
         </div>
-        <label htmlFor="evaporation">
-          <span>{t.evaporation}</span>
+        <div className="parameter-label">
+          <label htmlFor="evaporation">{t.evaporation}</label>
+          <TermHelp term="evaporation" label={t.evaporation} />
           <output aria-hidden="true">{evaporation.toFixed(3)}</output>
-        </label>
+        </div>
         <input
           id="evaporation"
           type={numericEvaporation ? 'number' : 'range'}
@@ -94,10 +99,11 @@ export function Parameters({
           <span>{numericEvaporation ? '0' : '0.001'}</span>
           <span>{numericEvaporation ? '0.100' : '0.020'}</span>
         </div>
-        <label htmlFor="exploration">
-          <span>{t.exploration}</span>
+        <div className="parameter-label">
+          <label htmlFor="exploration">{t.exploration}</label>
+          <TermHelp term="exploration" label={t.exploration} />
           <output aria-hidden="true">{exploration.toFixed(2)}</output>
-        </label>
+        </div>
         <input
           id="exploration"
           type={numericExploration ? 'number' : 'range'}
@@ -130,6 +136,7 @@ export function Parameters({
           onChange={(e) => setHypothesis(e.target.value)}
           maxLength={600}
         />
+        <TermHelp term="hypothesis" showLabel />
       </details>
     </aside>
   );

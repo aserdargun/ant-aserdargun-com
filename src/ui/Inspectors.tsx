@@ -2,6 +2,7 @@ import type { SimulationSnapshot } from '../simulation/types';
 import type { Copy, Language } from './i18n';
 import { decisionLabels } from './i18n';
 import { Crosshair } from 'lucide-react';
+import { TermHelp } from './TermHelp';
 
 interface Props {
   readSnapshot: () => SimulationSnapshot;
@@ -56,25 +57,37 @@ export function Inspectors({
       <h2>{t.colony}</h2>
       <dl className="colony-metrics">
         <div>
-          <dt>{t.delivered}</dt>
+          <dt className="term-label">
+            {t.delivered}
+            <TermHelp term="delivered" label={t.delivered} />
+          </dt>
           <dd data-testid="delivered">{m.delivered}</dd>
         </div>
         <div>
-          <dt>{t.returning}</dt>
+          <dt className="term-label">
+            {t.returning}
+            <TermHelp term="states" label={t.returning} />
+          </dt>
           <dd>
             {m.returning}
             <small> / {s.colony.population}</small>
           </dd>
         </div>
         <div>
-          <dt>{t.coverage}</dt>
+          <dt className="term-label">
+            {t.coverage}
+            <TermHelp term="coverage" label={t.coverage} />
+          </dt>
           <dd>
             {m.coverage.toFixed(0)}
             <small>%</small>
           </dd>
         </div>
         <div>
-          <dt>{t.discovery}</dt>
+          <dt className="term-label">
+            {t.discovery}
+            <TermHelp term="discovery" label={t.discovery} />
+          </dt>
           <dd>
             {m.firstDiscoveryTick === null ? (
               <small>{t.awaiting}</small>
@@ -111,8 +124,13 @@ export function Inspectors({
         </svg>
         {!m.delivered && <p className="fine-print">{t.noHistory}</p>}
       </figure>
-      <section className="individual rail-section">
-        <h3>{t.individual}</h3>
+      <section
+        className="individual rail-section"
+        id="individual"
+        tabIndex={-1}
+        aria-labelledby="individual-title"
+      >
+        <h3 id="individual-title">{t.individual}</h3>
         <label className="visually-hidden" htmlFor="ant-select">
           {t.selectLabel}
         </label>
@@ -138,17 +156,26 @@ export function Inspectors({
                 <dd>{ant.carryingFood ? t.yes : t.no}</dd>
               </div>
               <div>
-                <dt>{t.dwell}</dt>
+                <dt className="term-label">
+                  {t.dwell}
+                  <TermHelp term="states" label={t.dwell} />
+                </dt>
                 <dd>
                   {ant.dwellTicks} {t.ticks}
                 </dd>
               </div>
             </dl>
             <p className="decision">
-              <span>{t.decision}</span>
+              <span className="term-label">
+                {t.decision}
+                <TermHelp term="decision" label={t.decision} />
+              </span>
               <strong>{decisionLabels[language][ant.decision]}</strong>
             </p>
-            <p className="fine-print">{t.sensor}</p>
+            <p className="fine-print term-label">
+              {t.sensor}
+              <TermHelp term="probes" label={t.sensor} />
+            </p>
             <div className="probe-values">
               {ant.sensors.map((p, i) => (
                 <span key={i}>{p.food.toFixed(2)}</span>
@@ -179,27 +206,45 @@ export function Inspectors({
         <summary>{t.evidence}</summary>
         <dl>
           <div>
-            <dt>{t.searching}</dt>
+            <dt className="term-label">
+              {t.searching}
+              <TermHelp term="states" label={t.searching} />
+            </dt>
             <dd>{m.searching}</dd>
           </div>
           <div>
-            <dt>{t.throughput}</dt>
+            <dt className="term-label">
+              {t.throughput}
+              <TermHelp term="throughput" label={t.throughput} />
+            </dt>
             <dd>{m.throughput.toFixed(1)}</dd>
           </div>
           <div>
-            <dt>{t.distance}</dt>
+            <dt className="term-label">
+              {t.distance}
+              <TermHelp term="distance" label={t.distance} />
+            </dt>
             <dd>{m.meanTripDistance?.toFixed(0) ?? '—'} u</dd>
           </div>
           <div>
-            <dt>{t.remaining}</dt>
+            <dt className="term-label">
+              {t.remaining}
+              <TermHelp term="remaining" label={t.remaining} />
+            </dt>
             <dd>{m.remaining}</dd>
           </div>
           <div>
-            <dt>{t.actual}</dt>
+            <dt className="term-label">
+              {t.actual}
+              <TermHelp term="performance" label={t.actual} />
+            </dt>
             <dd>{performance.ticksPerSecond.toFixed(0)}</dd>
           </div>
           <div>
-            <dt>{t.worker}</dt>
+            <dt className="term-label">
+              {t.worker}
+              <TermHelp term="performance" label={t.worker} />
+            </dt>
             <dd>{performance.batchMs.toFixed(1)} ms</dd>
           </div>
         </dl>

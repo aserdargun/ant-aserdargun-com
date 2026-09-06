@@ -4,6 +4,7 @@ import { CanvasRenderer } from '../rendering/canvas';
 import type { Layer } from '../rendering/canvas';
 import type { SimulationSnapshot } from '../simulation/types';
 import type { Copy } from './i18n';
+import { TermHelp } from './TermHelp';
 
 interface Props {
   readSnapshot: () => SimulationSnapshot;
@@ -131,10 +132,12 @@ export function WorldView({
         <span>
           <i className="signal-dot" />
           {t.foodSignal}
+          <TermHelp term="foodSignal" label={t.foodSignal} />
         </span>
         <span>
           <i className="signal-ring" />
           {t.homeSignal}
+          <TermHelp term="homeSignal" label={t.homeSignal} />
         </span>
         <span className="signal-ramp">
           {t.signalLow}

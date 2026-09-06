@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { Pause, Play, StepForward, RotateCcw, Download, Upload } from 'lucide-react';
 import type { WorkerCommand, RunnerStatus, Speed } from '../worker/protocol';
 import type { Copy } from './i18n';
+import { TermHelp } from './TermHelp';
 
 interface Props {
   status: RunnerStatus;
@@ -46,7 +47,11 @@ export function Controls({ status, tick, copy: t, send, onReset, onError }: Prop
           <span>{t.reset}</span>
         </button>
         <span className="tick-count">
-          {t.tick} <strong data-testid="tick">{tick.toLocaleString('en-US')}</strong>
+          <span className="term-label">
+            {t.tick}
+            <TermHelp term="tick" label={t.tick} />
+          </span>
+          <strong data-testid="tick">{tick.toLocaleString('en-US')}</strong>
         </span>
       </div>
       <details className="run-tools">
@@ -59,6 +64,7 @@ export function Controls({ status, tick, copy: t, send, onReset, onError }: Prop
           </span>
         </summary>
         <p className="fine-print">{t.speedNote}</p>
+        <TermHelp term="replay" showLabel />
         <div className="run-form">
           <label htmlFor="run-ticks">{t.runTicks}</label>
           <input

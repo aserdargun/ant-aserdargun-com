@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Shuffle, ArrowUpRight } from 'lucide-react';
+import { Shuffle, ArrowUpRight, BookOpen, ArrowDown } from 'lucide-react';
 import { useLaboratory } from './useLaboratory';
 import { dictionary } from './i18n';
 import type { Language } from './i18n';
@@ -8,6 +8,9 @@ import { Parameters } from './Parameters';
 import { Inspectors } from './Inspectors';
 import { Controls } from './Controls';
 import { Methodology } from './Methodology';
+import { TermHelp, TermHelpProvider } from './TermHelp';
+import { LearningGuide } from './LearningGuide';
+import { learningCopy } from './learning';
 import type { SimulationConfig } from '../simulation/types';
 import type { WorkerCommand } from '../worker/protocol';
 
@@ -48,7 +51,7 @@ export default function App() {
   };
   const s = update?.readSnapshot();
   return (
-    <>
+    <TermHelpProvider language={language}>
       <header className="site-header">
         <a className="brand" href="#lab" aria-label="ANT">
           <span className="brand-mark" aria-hidden="true">
@@ -91,6 +94,14 @@ export default function App() {
             )}
           </div>
         </div>
+        <div className="learning-entry">
+          <a href="#learning">
+            <BookOpen aria-hidden="true" />
+            {learningCopy[language].nav}
+            <ArrowDown aria-hidden="true" />
+          </a>
+          <p>{learningCopy[language].hint}</p>
+        </div>
         {error && (
           <div className="error-banner" role="alert">
             <strong>{t.error}.</strong> {error}
@@ -111,7 +122,7 @@ export default function App() {
               hypothesis={hypothesis}
               setHypothesis={setHypothesis}
             />
-            <section className="world-column" aria-label={t.experiment}>
+            <section className="world-column" id="world" tabIndex={-1} aria-label={t.experiment}>
               <WorldView
                 readSnapshot={update.readSnapshot}
                 copy={t}
@@ -161,8 +172,10 @@ export default function App() {
           </p>
           <span>
             {t.abstraction} <b>·</b> V0.1
+            <TermHelp term="abstraction" label={t.abstraction} />
           </span>
         </section>
+        <LearningGuide language={language} />
         <footer>
           <span>{t.scope}</span>
           <a href="https://swi.aserdargun.com" target="_blank" rel="noreferrer">
@@ -174,7 +187,7 @@ export default function App() {
         </span>
       </main>
       <Methodology open={methodOpen} onClose={() => setMethodOpen(false)} copy={t} />
-    </>
+    </TermHelpProvider>
   );
 }
 
@@ -209,6 +222,7 @@ function SeedControl({
       }}
     >
       <label htmlFor="seed-input">{label}</label>
+      <TermHelp term="seed" label={label} />
       <input
         id="seed-input"
         aria-label={label}
