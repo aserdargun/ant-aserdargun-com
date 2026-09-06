@@ -32,7 +32,7 @@ for (const file of release.files) {
   if (file.path === 'index.html') {
     assert(type.includes('text/html'));
     assert(response.headers.get('content-security-policy')?.includes("worker-src 'self'"));
-    assert(bytes.toString().includes('ANT — Ant Colony Intelligence Laboratory'));
+    assert(bytes.toString().includes('ANT - Ant Colony Intelligence Laboratory'));
   }
 }
 assert.equal((await fetch(new URL('/assets/missing-worker.js', origin))).status, 404);

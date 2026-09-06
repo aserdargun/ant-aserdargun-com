@@ -16,7 +16,7 @@ async function collect(directory: string): Promise<string[]> {
 
 const paths = await collect('dist');
 const html = await readFile('dist/index.html', 'utf8');
-assert(html.includes('ANT — Ant Colony Intelligence Laboratory'));
+assert(html.includes('ANT - Ant Colony Intelligence Laboratory'));
 assert(!html.includes('/src/main.tsx'));
 for (const [, path] of html.matchAll(/(?:src|href)="\/(.*?)"/g))
   assert(paths.includes(path), `Missing entry asset: ${path}`);
