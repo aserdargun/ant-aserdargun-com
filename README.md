@@ -14,18 +14,20 @@ npm run dev
 Open [localhost:4187](http://127.0.0.1:4187). Stop the foreground server with **Ctrl+C**. The port is strict: an occupied port fails instead of silently serving a different checkout. A normal first visit starts at tick zero; reduced-motion users start paused and can run or step explicitly.
 
 ```bash
-npm run validate       # lint, 15 headless tests, strict UI + no-DOM kernel type checks, build, format
+npm run validate       # lint, 17 headless tests, strict UI + no-DOM kernel type checks, build, format
 npx playwright install chromium
 npm run test:e2e       # production behavior plus development/production crash regressions
 npm run evidence       # fixed-seed signaling ablation and headless performance measurements
 npm run preview        # serve the built dist/ at port 4187
 ```
 
-The browser suite starts and stops its own production preview on port 4188 and development server on port 4189. It checks interactions, accessibility, mobile, replay, timing-record memory and stalled-consumer frame delivery. Stop the development server before running the separate `preview` command on 4187. Evidence output is written to ignored `.local/evidence.json`; the reviewed baseline is in [docs/validation-evidence.json](docs/validation-evidence.json).
+The browser suite starts and stops its own production preview on port 4188 and development server on port 4189. If either belongs to another project, set `ANT_E2E_PORT=4288 npm run test:e2e` to use 4288/4289; occupied ports fail safely. It checks interactions, accessibility, mobile, replay, timing-record memory and stalled-consumer frame delivery. Stop the development server before running the separate `preview` command on 4187. Evidence output is written to ignored `.local/evidence.json`; the reviewed baseline is in [docs/validation-evidence.json](docs/validation-evidence.json).
 
 ## The first experiment
 
-Observe the 100-ant colony, then select food/home/combined chemical layers. Pause and step an individual tick, inspect an ant by clicking or using the accessible selector, and follow its local decisions. Change population, food-signal evaporation or exploration with **Apply & restart**. Keep the seed unchanged to investigate a parameter change. **Run & record** provides exact tick budgets and JSON export/import. Import recomputes the entire run from its inputs; it does not trust supplied metrics.
+Observe the 100-ant colony, then select food/home/combined chemical layers. Pause and step an individual tick, inspect an ant by clicking or using the accessible selector, and follow its local decisions. Change population, food-signal evaporation or exploration with **Apply & restart**. Keep the seed unchanged to investigate a parameter change. **Run & record** provides exact tick budgets and JSON export/import. Import recomputes the entire run from its inputs; it does not trust supplied metrics. Invalid imports retain the current run, selected ant, follow mode and parameter drafts. The tick form accepts Enter, validates the remaining budget and stops exactly at the requested tick. At the 100,000-tick limit, reset or import a run to continue.
+
+Pan the world by dragging or using the arrow keys while the canvas is focused. Pinch with two fingers, use + / −, or press Home to fit the world. A paused canvas redraws only when its view changes. Engine failures show an EN/TR retry action; retry prepares a new default colony.
 
 English and Turkish interfaces are included. Fonts are bundled locally with their licenses. Simulation state lives in a Web Worker; React owns application controls, while a separate Canvas adapter draws snapshots. The pure TypeScript kernel also runs under Node.
 
@@ -52,7 +54,7 @@ Source repository: [aserdargun/ant-aserdargun-com](https://github.com/aserdargun
 
 Production address: [ANT on Azure](https://ambitious-pebble-0ec95b303.3.azurestaticapps.net).
 
-The static `dist/` artifact targets Azure Static Web Apps Free in West Europe, in `aserdargun subscription 2`, using `rg-ant-aserdargun-com` and `swa-ant-aserdargun-com`. Each build validates its entry assets and Worker, then generates `release.json` with the source commit and SHA-256 asset manifest. GitHub publication precedes Azure provisioning.
+The static `dist/` artifact targets Azure Static Web Apps Free in West Europe, in `aserdargun subscription 2`, using `rg-ant-aserdargun-com` and `swa-ant-aserdargun-com`. Each build validates its entry assets and Worker, then generates `release.json` with the source commit, a `sourceDirty` flag and SHA-256 asset manifest. Local changes are explicitly marked; the live verifier rejects artifacts built from a modified working tree. GitHub publication precedes Azure provisioning.
 
 Pushes to `main` run `.github/workflows/deploy-swa-ant-aserdargun-com.yml`. It installs locked dependencies, checks the scientific and browser contracts, and uploads the prebuilt artifact. Deployment is serialized and uses the repository secret `AZURE_STATIC_WEB_APPS_API_TOKEN_SWA_ANT_ASERDARGUN_COM`. No server runtime or paid Azure component is required.
 

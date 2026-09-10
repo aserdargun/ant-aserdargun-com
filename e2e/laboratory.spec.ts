@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { readFile, mkdir } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { Simulation } from '../src/simulation/simulation';
 import { defaultConfig } from '../src/experiments/config';
@@ -27,6 +27,7 @@ test.beforeEach(async ({ page }) => {
   });
   await page.goto('/');
   await expect(page.getByRole('button', { name: 'Run', exact: true })).toBeVisible();
+  await expect(page.locator('.experiment-meta')).toContainText('EXP–001');
 });
 
 test('production worker exactly matches headless state, exports and replays at tick 6000', async ({
@@ -56,8 +57,7 @@ test('production worker exactly matches headless state, exports and replays at t
   await expect(page.getByTestId('tick')).toHaveText('6,000', { timeout: 30000 });
   expect(await page.evaluate(() => JSON.stringify(window.__antSnapshot))).toBe(browserState);
   await page.locator('.run-tools summary').click();
-  await mkdir('.local', { recursive: true });
-  await page.screenshot({ path: '.local/desktop.png', fullPage: true });
+  await page.screenshot({ path: info.outputPath('desktop.png'), fullPage: true });
   expect(errors).toEqual([]);
 });
 
@@ -134,7 +134,7 @@ test('layers, keyboard ant inspector, follow, pan/fit, seed and methodology', as
   await expect.poll(() => page.getByLabel('Seed', { exact: true }).inputValue()).not.toBe('42');
 });
 
-test('mobile EN/TR retains useful controls without horizontal overflow', async ({ page }) => {
+test('mobile EN/TR retains useful controls without horizontal overflow', async ({ page }, info) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: 'TR', exact: true }).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'tr');
@@ -144,7 +144,7 @@ test('mobile EN/TR retains useful controls without horizontal overflow', async (
   await expect(page.getByTestId('tick')).toHaveText('1');
   await page.getByLabel('Karınca seç', { exact: true }).selectOption('0');
   await expect(page.locator('.ant-details')).toBeVisible();
-  await page.screenshot({ path: '.local/mobile-tr.png', fullPage: true });
+  await page.screenshot({ path: info.outputPath('mobile-tr.png'), fullPage: true });
   await page.getByRole('button', { name: 'Yöntem', exact: true }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
@@ -154,6 +154,8 @@ test('mobile EN/TR retains useful controls without horizontal overflow', async (
 });
 
 test('invalid imports fail clearly and preserve the active run', async ({ page }) => {
+  await page.getByLabel('Select ant', { exact: true }).selectOption('10');
+  await page.getByRole('button', { name: 'Follow ant', exact: true }).click();
   await page.getByRole('button', { name: 'Step', exact: true }).click();
   await page.locator('.run-tools summary').click();
   await page.getByLabel('Import & replay', { exact: true }).setInputFiles({
@@ -162,6 +164,11 @@ test('invalid imports fail clearly and preserve the active run', async ({ page }
     buffer: Buffer.from('{"versions":{"schema":99}}'),
   });
   await expect(page.getByRole('alert')).toContainText('unsupported model version');
+  await expect(page.getByLabel('Select ant', { exact: true })).toHaveValue('10');
+  await expect(page.getByRole('button', { name: 'Stop following', exact: true })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
   await expect(page.getByTestId('tick')).toHaveText('1');
 });
 
@@ -218,6 +225,10 @@ test('imported full-range parameters remain editable and a smaller world fits au
     '0.12345',
   );
   await expect(page.getByLabel('Select ant', { exact: true })).toHaveValue('');
+  await expect(page.getByText('Custom world', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('One nest. One food source. No leader.', { exact: true }),
+  ).toHaveCount(0);
   // Food center must be in its fitted camera position, not offscreen at the old world's center.
   await expect
     .poll(() =>

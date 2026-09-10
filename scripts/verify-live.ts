@@ -15,6 +15,7 @@ assert(releaseResponse.headers.get('cache-control')?.includes('no-store'));
 const release = await releaseResponse.json();
 assert.equal(release.application, 'ANT');
 assert.equal(release.commit, expected);
+assert.equal(release.sourceDirty, false, 'Release must come from a verified clean source tree');
 assert(release.files.length > 0);
 for (const file of release.files) {
   assert(!file.path.includes('..') && !file.path.startsWith('/'), 'Unsafe manifest path');

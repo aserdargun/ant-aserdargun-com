@@ -10,12 +10,14 @@ export function Parameters({
   onApply,
   hypothesis,
   setHypothesis,
+  customWorld,
 }: {
   config: SimulationConfig;
   copy: Copy;
   onApply: (config: SimulationConfig) => void;
   hypothesis: string;
   setHypothesis: (value: string) => void;
+  customWorld: boolean;
 }) {
   const [population, setPopulation] = useState(config.population);
   const [evaporation, setEvaporation] = useState(config.fields.food.evaporation);
@@ -33,7 +35,7 @@ export function Parameters({
   return (
     <aside className="experiment-rail">
       <h2>{t.experiment}</h2>
-      <p>{t.intro}</p>
+      <p>{customWorld ? t.customWorldNote : t.intro}</p>
       <p>{t.intro2}</p>
       <section className="rail-section">
         <h3>{t.rules}</h3>
@@ -83,7 +85,9 @@ export function Parameters({
         <div className="parameter-label">
           <label htmlFor="evaporation">{t.evaporation}</label>
           <TermHelp term="evaporation" label={t.evaporation} />
-          <output aria-hidden="true">{evaporation.toFixed(3)}</output>
+          <output aria-hidden="true">
+            {numericEvaporation ? evaporation : evaporation.toFixed(3)}
+          </output>
         </div>
         <input
           id="evaporation"
@@ -102,7 +106,9 @@ export function Parameters({
         <div className="parameter-label">
           <label htmlFor="exploration">{t.exploration}</label>
           <TermHelp term="exploration" label={t.exploration} />
-          <output aria-hidden="true">{exploration.toFixed(2)}</output>
+          <output aria-hidden="true">
+            {numericExploration ? exploration : exploration.toFixed(2)}
+          </output>
         </div>
         <input
           id="exploration"

@@ -49,7 +49,7 @@ export function Inspectors({
   const path = history
     .map(
       (p, i) =>
-        `${i ? 'L' : 'M'}${26 + ((p.tick - first) / (end - first)) * 204},${114 - (p.delivered / max) * 100}`,
+        `${i ? 'L' : 'M'}${46 + ((p.tick - first) / (end - first)) * 184},${114 - (p.delivered / max) * 100}`,
     )
     .join(' ');
   return (
@@ -107,15 +107,15 @@ export function Inspectors({
           role="img"
           aria-label={`${t.history}: ${history[0].delivered} → ${m.delivered}, ${first}–${s.tick} ${t.ticks}`}
         >
-          <path d="M26 12V114H230" className="chart-axis" fill="none" />
+          <path d="M46 12V114H230" className="chart-axis" fill="none" />
           <path d={path} className="chart-line" fill="none" />
-          <text x="20" y="18" textAnchor="end">
+          <text x="40" y="18" textAnchor="end">
             {m.delivered}
           </text>
-          <text x="20" y="118" textAnchor="end">
+          <text x="40" y="118" textAnchor="end">
             0
           </text>
-          <text x="26" y="135">
+          <text x="46" y="135">
             {first}
           </text>
           <text x="230" y="135" textAnchor="end">

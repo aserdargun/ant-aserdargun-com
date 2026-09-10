@@ -1,5 +1,17 @@
 # V0.1 validation record
 
+## Maintenance verification — 2026-09-10
+
+- 17 headless tests passed. The original 6,000-tick scientific snapshot hash remains unchanged; simulation, brain and math versions are unchanged.
+- Final lint, strict UI/kernel type checks, production build and formatting checks passed. `npm audit --json` reported zero known dependency vulnerabilities.
+- `ANT_E2E_PORT=4288 npm run test:e2e`: 21 Chromium tests passed (19 production, two development). The alternate ports preserve other projects' listeners.
+- Regression coverage includes invalid imports retaining selection/follow/drafts, exact Enter-submitted tick budgets, the run ceiling, startup and message-error recovery, custom-world identity, zero-deposition explanations, pinch/cancel, keyboard camera controls and camera reset at tick zero.
+- All 26 term dialogs and three lessons were exercised in EN/TR. Layout widths 320, 390, 768, 1024 and 1536 passed overflow checks; automated WCAG A/AA scans passed for desktop, Turkish mobile and open term dialogs. Dedicated 6,000-tick desktop/mobile rendering checks had no console errors.
+- Rendering now schedules frames only on changes. Imported parameter precision is preserved, Turkish numeric rendering follows the selected language, and paused finite runs report zero current ticks/s in the performance inspector.
+- Local artifacts explicitly record `sourceDirty`; live verification requires a clean source tree. This maintenance pass was validated locally and has not been published.
+
+The following sections preserve the original release evidence and its scientific limits.
+
 Verified locally on 2026-09-06. This is the **first vertical slice**, not a declaration that the full ten-experiment V1 curriculum is complete.
 
 ## Completed checks

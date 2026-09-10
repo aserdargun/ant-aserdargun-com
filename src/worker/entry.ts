@@ -1,4 +1,5 @@
 import { Runner } from './runner';
+import { VersionMismatchError } from '../experiments/run';
 import type { WorkerRequest, WorkerUpdate } from './protocol';
 
 const runner = new Runner();
@@ -21,6 +22,7 @@ function flush() {
   // A slow or hidden view may retain one frame, never an unbounded queue of field copies.
   // Coalesce requests, then sample the latest state when that frame has been consumed.
   if (!pending || inFlight !== null) return;
+  if (!runner.status.playing && runner.status.remainingTicks === 0) ticksPerSecond = 0;
   pending = false;
   inFlight = ++sequence;
   emit({
@@ -55,6 +57,14 @@ self.onmessage = (event: MessageEvent<WorkerRequest>) => {
   } catch (error) {
     emit({
       type: 'error',
+      code:
+        error instanceof VersionMismatchError
+          ? 'versionError'
+          : event.data.type === 'import'
+            ? 'importError'
+            : event.data.type === 'run'
+              ? 'tickError'
+              : 'commandError',
       message: error instanceof Error ? error.message : 'Simulation command failed.',
     });
   }

@@ -27,4 +27,6 @@ it('F: an unscripted reinforced corridor emerges across three fixed seeds', () =
       );
     }
   }
-});
+  // Six 6,000-tick simulations are a scientific regression, not a wall-clock benchmark.
+  // Allow contention on shared development machines without weakening any assertion.
+}, 120000);

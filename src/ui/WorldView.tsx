@@ -7,6 +7,7 @@ import type { Copy } from './i18n';
 import { TermHelp } from './TermHelp';
 
 interface Props {
+  resetRevision: number;
   readSnapshot: () => SimulationSnapshot;
   copy: Copy;
   selected: number | null;
@@ -16,6 +17,7 @@ interface Props {
   sensors: boolean;
 }
 export function WorldView({
+  resetRevision,
   readSnapshot,
   copy: t,
   selected,
@@ -28,13 +30,18 @@ export function WorldView({
     renderer = useRef<CanvasRenderer | null>(null);
   const [layer, setLayer] = useState<Layer>('combined');
   const [error, setError] = useState('');
-  const drag = useRef<{
-    x: number;
-    y: number;
-    startX: number;
-    startY: number;
-    moved: boolean;
-  } | null>(null);
+  const pointers = useRef(
+    new Map<
+      number,
+      {
+        x: number;
+        y: number;
+        startX: number;
+        startY: number;
+        moved: boolean;
+      }
+    >(),
+  );
   useEffect(() => {
     try {
       renderer.current = new CanvasRenderer(canvas.current!);
@@ -50,6 +57,9 @@ export function WorldView({
     renderer.current?.setSnapshot(readSnapshot());
   }, [readSnapshot]);
   useEffect(() => {
+    renderer.current?.fit();
+  }, [resetRevision]);
+  useEffect(() => {
     renderer.current?.setOptions({
       layer,
       selected,
@@ -57,11 +67,12 @@ export function WorldView({
       sensors,
       nestLabel: t.nest,
       foodLabel: t.food,
+      locale: t.locale,
     });
   }, [layer, selected, follow, sensors, t]);
   return (
     <div className="world-view">
-      <div className="layer-tabs" role="group" aria-label={t.parameters}>
+      <div className="layer-tabs" role="group" aria-label={t.layers}>
         {(['natural', 'food', 'home', 'combined'] as Layer[]).map((value) => (
           <button key={value} aria-pressed={layer === value} onClick={() => setLayer(value)}>
             {value === 'food' ? t.foodSignal : value === 'home' ? t.homeSignal : t[value]}
@@ -73,20 +84,52 @@ export function WorldView({
           ref={canvas}
           aria-label={t.simDescription}
           role="img"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            const directions: Record<string, [number, number]> = {
+              ArrowLeft: [40, 0],
+              ArrowRight: [-40, 0],
+              ArrowUp: [0, 40],
+              ArrowDown: [0, -40],
+            };
+            const pan = directions[e.key];
+            if (!pan && !['+', '=', '-', 'Home'].includes(e.key)) return;
+            e.preventDefault();
+            setFollow(false);
+            if (pan) renderer.current?.pan(pan[0], pan[1]);
+            else if (e.key === 'Home') renderer.current?.fit();
+            else renderer.current?.zoom(e.key === '-' ? 0.8 : 1.25);
+          }}
           onPointerDown={(e) => {
             if (e.button !== 0) return;
             e.currentTarget.setPointerCapture(e.pointerId);
-            drag.current = {
+            pointers.current.set(e.pointerId, {
               x: e.clientX,
               y: e.clientY,
               startX: e.clientX,
               startY: e.clientY,
               moved: false,
-            };
+            });
+            if (pointers.current.size > 1)
+              pointers.current.forEach((pointer) => {
+                pointer.moved = true;
+              });
           }}
           onPointerMove={(e) => {
-            const d = drag.current;
+            const d = pointers.current.get(e.pointerId);
             if (!d) return;
+            const other = [...pointers.current.entries()].find(([id]) => id !== e.pointerId)?.[1];
+            if (other) {
+              const before = Math.hypot(d.x - other.x, d.y - other.y);
+              const after = Math.hypot(e.clientX - other.x, e.clientY - other.y);
+              setFollow(false);
+              if (before > 0 && after > 0)
+                renderer.current?.zoom(after / before, (d.x + other.x) / 2, (d.y + other.y) / 2);
+              renderer.current?.pan((e.clientX - d.x) / 2, (e.clientY - d.y) / 2);
+              d.x = e.clientX;
+              d.y = e.clientY;
+              return;
+            }
             if (Math.hypot(e.clientX - d.startX, e.clientY - d.startY) > 5) d.moved = true;
             if (d.moved) {
               setFollow(false);
@@ -96,12 +139,17 @@ export function WorldView({
             d.y = e.clientY;
           }}
           onPointerUp={(e) => {
-            const d = drag.current;
+            const d = pointers.current.get(e.pointerId);
             if (d && !d.moved) onSelect(renderer.current?.select(e.clientX, e.clientY) ?? null);
-            drag.current = null;
+            pointers.current.delete(e.pointerId);
+            if (e.currentTarget.hasPointerCapture(e.pointerId))
+              e.currentTarget.releasePointerCapture(e.pointerId);
           }}
-          onPointerCancel={() => {
-            drag.current = null;
+          onPointerCancel={(e) => {
+            pointers.current.delete(e.pointerId);
+          }}
+          onLostPointerCapture={(e) => {
+            pointers.current.delete(e.pointerId);
           }}
         />
         {error && (

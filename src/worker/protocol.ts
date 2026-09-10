@@ -25,4 +25,9 @@ export type WorkerUpdate =
       performance: { ticksPerSecond: number; batchMs: number };
     }
   | { type: 'export'; run: RunRecord }
-  | { type: 'error'; message: string };
+  | {
+      type: 'error';
+      message: string;
+      fatal?: boolean;
+      code?: 'tickError' | 'versionError' | 'importError' | 'commandError';
+    };

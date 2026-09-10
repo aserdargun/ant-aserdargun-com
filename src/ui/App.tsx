@@ -13,9 +13,12 @@ import { LearningGuide } from './LearningGuide';
 import { learningCopy } from './learning';
 import type { SimulationConfig } from '../simulation/types';
 import type { WorkerCommand } from '../worker/protocol';
+import { parseRun, VersionMismatchError } from '../experiments/run';
+import { defaultConfig, parseConfig } from '../experiments/config';
+
+const defaultWorld = JSON.stringify(parseConfig(defaultConfig()).world);
 
 export default function App() {
-  const { update, send, error, setError, exported } = useLaboratory();
   const [language, setLanguage] = useState<Language>(() => {
     try {
       return localStorage.getItem('ant-language') === 'tr' ? 'tr' : 'en';
@@ -24,13 +27,16 @@ export default function App() {
     }
   });
   const [methodOpen, setMethodOpen] = useState(false);
+  const { update, send, error, setError, exported, failed, retry } = useLaboratory(language);
   const [hypothesis, setHypothesis] = useState('');
   const [selected, setSelected] = useState<number | null>(null);
+  const [viewRevision, setViewRevision] = useState(0);
   const [follow, setFollow] = useState(false),
     [sensors, setSensors] = useState(false);
   const t = dictionary[language];
   useEffect(() => {
     document.documentElement.lang = language;
+    document.title = `ANT - ${dictionary[language].subtitle}`;
     try {
       localStorage.setItem('ant-language', language);
     } catch {
@@ -38,20 +44,32 @@ export default function App() {
     }
   }, [language]);
   const restart = (config: SimulationConfig, play = true) => {
+    setViewRevision((value) => value + 1);
     setSelected(null);
     setFollow(false);
     send({ type: 'reset', config, play });
   };
   const command = (value: WorkerCommand) => {
     if (value.type === 'import') {
+      try {
+        parseRun(value.data);
+      } catch (error) {
+        setError(error instanceof VersionMismatchError ? t.versionError : t.importError);
+        return;
+      }
       setSelected(null);
       setFollow(false);
+      setViewRevision((value) => value + 1);
     }
     send(value);
   };
   const s = update?.readSnapshot();
+  const customWorld = s && JSON.stringify(s.config.world) !== defaultWorld;
   return (
     <TermHelpProvider language={language}>
+      <a className="skip-link" href="#world">
+        {t.skipToWorld}
+      </a>
       <header className="site-header">
         <a className="brand" href="#lab" aria-label="ANT">
           <span className="brand-mark" aria-hidden="true">
@@ -66,7 +84,7 @@ export default function App() {
           <button className="text-button" onClick={() => setMethodOpen(true)}>
             {t.methodology}
           </button>
-          <div className="languages" role="group" aria-label="Language">
+          <div className="languages" role="group" aria-label={t.language}>
             <button aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>
               EN
             </button>
@@ -81,7 +99,7 @@ export default function App() {
         <div className="title-band">
           <h1>{t.title}</h1>
           <div className="experiment-meta">
-            <span>EXP–001</span>
+            <span>{customWorld ? t.customWorld : 'EXP–001'}</span>
             {s && (
               <SeedControl
                 key={s.config.seed}
@@ -108,7 +126,20 @@ export default function App() {
             <button onClick={() => setError('')}>{t.close}</button>
           </div>
         )}
-        {!s || !update ? (
+        {failed ? (
+          <div className="loading" role="alert">
+            <p>{t.workerError}</p>
+            <button
+              onClick={() => {
+                setSelected(null);
+                setFollow(false);
+                retry();
+              }}
+            >
+              {t.retry}
+            </button>
+          </div>
+        ) : !s || !update ? (
           <div className="loading" role="status">
             {t.loading}
           </div>
@@ -121,9 +152,11 @@ export default function App() {
               onApply={restart}
               hypothesis={hypothesis}
               setHypothesis={setHypothesis}
+              customWorld={Boolean(customWorld)}
             />
             <section className="world-column" id="world" tabIndex={-1} aria-label={t.experiment}>
               <WorldView
+                resetRevision={viewRevision}
                 readSnapshot={update.readSnapshot}
                 copy={t}
                 selected={selected}
@@ -164,11 +197,15 @@ export default function App() {
         <section className="insight">
           <h2>{t.insight}</h2>
           <p>
-            {!s || s.metrics.firstDiscoveryTick === null
-              ? t.early
-              : s.metrics.delivered === 0
-                ? t.waitingReturn
-                : t.explanation}
+            {s?.config.fields.food.deposit === 0
+              ? t.noDeposition
+              : s?.config.brain.signalGain === 0
+                ? t.noSensing
+                : !s || s.metrics.firstDiscoveryTick === null
+                  ? t.early
+                  : s.metrics.delivered === 0
+                    ? t.waitingReturn
+                    : t.explanation}
           </p>
           <span>
             {t.abstraction} <b>·</b> V0.1

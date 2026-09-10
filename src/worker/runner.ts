@@ -15,7 +15,7 @@ export class Runner {
         this.status = { playing: command.play, speed: this.status.speed, remainingTicks: 0 };
         break;
       case 'play':
-        this.status.playing = command.playing;
+        this.status.playing = command.playing && this.simulation.tickCount < MAX_RUN_TICKS;
         this.status.remainingTicks = 0;
         break;
       case 'speed':

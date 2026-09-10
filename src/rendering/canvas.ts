@@ -9,6 +9,7 @@ export interface RenderOptions {
   sensors: boolean;
   nestLabel: string;
   foodLabel: string;
+  locale: string;
 }
 
 /** Presentation adapter. Never mutates a snapshot or decides an agent action. */
@@ -25,11 +26,11 @@ export class CanvasRenderer {
     sensors: false,
     nestLabel: 'Nest',
     foodLabel: 'Food',
+    locale: 'en-US',
   };
   private resize: ResizeObserver;
   private width = 0;
   private height = 0;
-  private dirty = true;
   private frame = 0;
 
   constructor(private canvas: HTMLCanvasElement) {
@@ -45,17 +46,17 @@ export class CanvasRenderer {
         pixelsHigh = Math.round(height * dpr);
       if (canvas.width !== pixelsWide) canvas.width = pixelsWide;
       if (canvas.height !== pixelsHigh) canvas.height = pixelsHigh;
-      this.dirty = true;
+      this.invalidate();
     });
     this.resize.observe(canvas);
-    const animate = () => {
-      if (this.dirty) {
-        this.draw();
-        this.dirty = false;
-      }
-      this.frame = requestAnimationFrame(animate);
-    };
-    this.frame = requestAnimationFrame(animate);
+    this.invalidate();
+  }
+  private invalidate() {
+    if (this.frame) return;
+    this.frame = requestAnimationFrame(() => {
+      this.frame = 0;
+      this.draw();
+    });
   }
   setSnapshot(snapshot: SimulationSnapshot) {
     const before = this.snapshot?.config.world,
@@ -69,28 +70,37 @@ export class CanvasRenderer {
       this.camera.fit(after.width, after.height);
     this.snapshot = snapshot;
     this.heatmap();
-    this.dirty = true;
+    this.invalidate();
   }
   setOptions(options: RenderOptions) {
     const changedLayer = this.options.layer !== options.layer;
     this.options = options;
     if (changedLayer) this.heatmap();
-    this.dirty = true;
+    this.invalidate();
   }
-  zoom(factor: number) {
+  zoom(factor: number, clientX?: number, clientY?: number) {
+    const before = this.scale();
+    if (!Number.isFinite(factor) || factor <= 0 || before <= 0) return;
     this.camera.zoomBy(factor);
-    this.dirty = true;
+    if (clientX !== undefined && clientY !== undefined) {
+      const box = this.canvas.getBoundingClientRect();
+      const delta = 1 / before - 1 / this.scale();
+      this.camera.x += (clientX - box.left - this.width / 2) * delta;
+      this.camera.y += (clientY - box.top - this.height / 2) * delta;
+    }
+    this.invalidate();
   }
   fit() {
     if (this.snapshot)
       this.camera.fit(this.snapshot.config.world.width, this.snapshot.config.world.height);
-    this.dirty = true;
+    this.invalidate();
   }
   pan(dx: number, dy: number) {
     const scale = this.scale();
+    if (!Number.isFinite(scale) || scale <= 0) return;
     this.camera.x -= dx / scale;
     this.camera.y -= dy / scale;
-    this.dirty = true;
+    this.invalidate();
   }
   select(clientX: number, clientY: number): number | null {
     if (!this.snapshot) return null;
@@ -111,6 +121,7 @@ export class CanvasRenderer {
   }
   dispose() {
     cancelAnimationFrame(this.frame);
+    this.frame = 0;
     this.resize.disconnect();
   }
   private scale() {
@@ -246,7 +257,7 @@ export class CanvasRenderer {
         }
       }
       this.label(
-        `${this.options.foodLabel} · ${source.amount.toLocaleString()}`,
+        `${this.options.foodLabel} · ${source.amount.toLocaleString(this.options.locale)}`,
         source.x,
         source.y + source.radius + 20,
         scale,

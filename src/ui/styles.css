@@ -60,6 +60,10 @@ textarea:focus-visible {
   outline: 3px solid #9c661d;
   outline-offset: 3px;
 }
+canvas:focus-visible {
+  outline: 3px solid #e8b459;
+  outline-offset: -3px;
+}
 button:disabled {
   opacity: 0.5;
   cursor: default;
@@ -75,6 +79,18 @@ button svg {
 a {
   color: inherit;
   text-underline-offset: 4px;
+}
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  padding: 12px 18px;
+  background: var(--paper);
+  transform: translateY(-150%);
+}
+.skip-link:focus {
+  transform: translateY(0);
 }
 h1,
 h2,

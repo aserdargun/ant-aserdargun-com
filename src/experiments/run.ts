@@ -7,6 +7,7 @@ import type {
 } from '../simulation/types';
 
 export const MAX_RUN_TICKS = 100000;
+export class VersionMismatchError extends Error {}
 export interface RunRecord {
   versions: typeof VERSIONS;
   config: SimulationConfig;
@@ -33,7 +34,7 @@ export function parseRun(input: unknown): { config: SimulationConfig; tickCount:
   const r = input as Record<string, unknown>;
   const versions = r.versions as Record<string, unknown> | undefined;
   if (!versions || Object.entries(VERSIONS).some(([key, value]) => versions[key] !== value))
-    throw new Error('This run uses an unsupported model version.');
+    throw new VersionMismatchError('This run uses an unsupported model version.');
   if (
     !Number.isSafeInteger(r.tickCount) ||
     (r.tickCount as number) < 0 ||

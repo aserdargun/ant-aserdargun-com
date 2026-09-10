@@ -39,6 +39,14 @@ if (!commit) {
   }
 }
 assert(commit === 'local' || /^[a-f0-9]{40}$/.test(commit), 'Invalid release commit');
+// A local build may contain edits beyond HEAD. Never label it as an exact commit artifact.
+let sourceDirty = true;
+try {
+  sourceDirty =
+    execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim().length > 0;
+} catch {
+  // Without a repository there is no verified source identity.
+}
 const files = await Promise.all(
   paths
     .filter((path) => !['staticwebapp.config.json', 'release.json'].includes(path))
@@ -55,8 +63,8 @@ const bytes = files.reduce((sum, file) => sum + file.bytes, 0);
 assert(bytes < 250 * 1024 * 1024, 'Artifact exceeds Free plan size limit');
 await writeFile(
   'dist/release.json',
-  `${JSON.stringify({ application: 'ANT', commit, builtAt: new Date().toISOString(), versions: VERSIONS, files }, null, 2)}\n`,
+  `${JSON.stringify({ application: 'ANT', commit, sourceDirty, builtAt: new Date().toISOString(), versions: VERSIONS, files }, null, 2)}\n`,
 );
 console.log(
-  `Verified static artifact: ${files.length} public files, ${bytes} bytes, commit ${commit}`,
+  `Verified static artifact: ${files.length} public files, ${bytes} bytes, commit ${commit}${sourceDirty ? ' (local modifications)' : ''}`,
 );

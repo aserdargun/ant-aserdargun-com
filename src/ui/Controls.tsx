@@ -3,6 +3,7 @@ import { Pause, Play, StepForward, RotateCcw, Download, Upload } from 'lucide-re
 import type { WorkerCommand, RunnerStatus, Speed } from '../worker/protocol';
 import type { Copy } from './i18n';
 import { TermHelp } from './TermHelp';
+import { MAX_RUN_TICKS } from '../experiments/run';
 
 interface Props {
   status: RunnerStatus;
@@ -15,23 +16,26 @@ interface Props {
 export function Controls({ status, tick, copy: t, send, onReset, onError }: Props) {
   const [ticks, setTicks] = useState('1800');
   const fileInput = useRef<HTMLInputElement>(null);
+  const fileRead = useRef(0);
   const active = status.playing || status.remainingTicks > 0;
+  const remaining = MAX_RUN_TICKS - tick;
   return (
     <div className="controls">
       <div className="transport">
         <button
           className="play-control"
           aria-label={active ? t.pause : t.play}
+          disabled={!active && remaining === 0}
           onClick={() => send({ type: 'play', playing: !active })}
         >
           {active ? <Pause fill="currentColor" /> : <Play fill="currentColor" />}
           {active ? t.pause : t.play}
         </button>
-        <button onClick={() => send({ type: 'step' })}>
+        <button disabled={remaining === 0} onClick={() => send({ type: 'step' })}>
           <StepForward />
           {t.step}
         </button>
-        <div className="speeds" role="group" aria-label="Speed">
+        <div className="speeds" role="group" aria-label={t.speed}>
           {([1, 5, 20, 100] as Speed[]).map((speed) => (
             <button
               aria-pressed={status.speed === speed}
@@ -51,7 +55,7 @@ export function Controls({ status, tick, copy: t, send, onReset, onError }: Prop
             {t.tick}
             <TermHelp term="tick" label={t.tick} />
           </span>
-          <strong data-testid="tick">{tick.toLocaleString('en-US')}</strong>
+          <strong data-testid="tick">{tick.toLocaleString(t.locale)}</strong>
         </span>
       </div>
       <details className="run-tools">
@@ -65,19 +69,38 @@ export function Controls({ status, tick, copy: t, send, onReset, onError }: Prop
         </summary>
         <p className="fine-print">{t.speedNote}</p>
         <TermHelp term="replay" showLabel />
-        <div className="run-form">
+        <form
+          className="run-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const requested = Number(ticks);
+            if (!Number.isSafeInteger(requested) || requested < 1 || requested > remaining) {
+              onError(t.tickError);
+              return;
+            }
+            send({ type: 'run', ticks: requested });
+          }}
+        >
           <label htmlFor="run-ticks">{t.runTicks}</label>
           <input
             id="run-ticks"
             type="number"
             min="1"
-            max="100000"
+            max={Math.max(1, remaining)}
+            required
+            disabled={remaining === 0}
+            aria-describedby="run-budget"
             step="1"
             value={ticks}
             onChange={(e) => setTicks(e.target.value)}
           />
-          <button onClick={() => send({ type: 'run', ticks: Number(ticks) })}>{t.execute}</button>
-        </div>
+          <button type="submit" disabled={remaining === 0}>
+            {t.execute}
+          </button>
+        </form>
+        <p id="run-budget" className="fine-print">
+          {t.availableTicks}: {remaining.toLocaleString(t.locale)}
+        </p>
         <div className="file-actions">
           <button onClick={() => send({ type: 'export' })}>
             <Download />
@@ -95,6 +118,7 @@ export function Controls({ status, tick, copy: t, send, onReset, onError }: Prop
           accept=".json,application/json"
           aria-label={t.import}
           onChange={async (e) => {
+            const request = ++fileRead.current;
             const file = e.currentTarget.files?.[0];
             e.currentTarget.value = '';
             if (!file) return;
@@ -103,14 +127,15 @@ export function Controls({ status, tick, copy: t, send, onReset, onError }: Prop
               return;
             }
             try {
-              send({ type: 'import', data: JSON.parse(await file.text()) });
+              const data: unknown = JSON.parse(await file.text());
+              if (request === fileRead.current) send({ type: 'import', data });
             } catch {
-              onError(t.fileError);
+              if (request === fileRead.current) onError(t.fileError);
             }
           }}
         />
       </details>
-      {tick >= 100000 && <p role="status">{t.maxTicks}</p>}
+      {tick >= MAX_RUN_TICKS && <p role="status">{t.maxTicks}</p>}
     </div>
   );
 }

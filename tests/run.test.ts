@@ -1,8 +1,34 @@
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import { Simulation } from '../src/simulation/simulation';
 import { defaultConfig, parseConfig } from '../src/experiments/config';
 import { parseRun, makeRun } from '../src/experiments/run';
 import { Runner } from '../src/worker/runner';
+import { MAX_RUN_TICKS } from '../src/experiments/run';
+
+it('rejected imports preserve scientific state and queued work', () => {
+  const runner = new Runner();
+  runner.command({ type: 'run', ticks: 100 });
+  runner.advance(4);
+  const before = runner.simulation.snapshot();
+  const status = { ...runner.status };
+  const record = runner.simulation.exportRun();
+  record.config.population = -1;
+  expect(() => runner.command({ type: 'import', data: record })).toThrow();
+  expect(runner.simulation.snapshot()).toEqual(before);
+  expect(runner.status).toEqual(status);
+});
+
+it('the tick ceiling cannot enter a phantom playing state or accept more work', () => {
+  const runner = new Runner();
+  vi.spyOn(runner.simulation, 'tickCount', 'get').mockReturnValue(MAX_RUN_TICKS);
+  const step = vi.spyOn(runner.simulation, 'step');
+  runner.command({ type: 'play', playing: true });
+  expect(runner.status.playing).toBe(false);
+  runner.command({ type: 'step' });
+  expect(step).not.toHaveBeenCalled();
+  expect(() => runner.command({ type: 'run', ticks: 1 })).toThrow('Run limit');
+  expect(runner.advance(10)).toBe(0);
+});
 
 it('exported run reproduces all scientific state and rejects incompatible versions', () => {
   const sim = new Simulation(defaultConfig());

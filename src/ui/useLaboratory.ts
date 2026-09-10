@@ -3,6 +3,7 @@ import { SimulationClient } from '../worker/client';
 import type { WorkerCommand, WorkerUpdate } from '../worker/protocol';
 import { defaultConfig } from '../experiments/config';
 import type { RunRecord } from '../experiments/run';
+import { dictionary, type Language } from './i18n';
 
 type SnapshotUpdate = Extract<WorkerUpdate, { type: 'snapshot' }>;
 // Keep the immutable frame behind an accessor. React's development Performance Tracks
@@ -11,20 +12,33 @@ type SnapshotUpdate = Extract<WorkerUpdate, { type: 'snapshot' }>;
 type SnapshotFrame = Omit<SnapshotUpdate, 'snapshot'> & {
   readSnapshot: () => SnapshotUpdate['snapshot'];
 };
-export function useLaboratory() {
+export function useLaboratory(language: Language) {
   const client = useRef<SimulationClient | null>(null);
   const [update, setUpdate] = useState<SnapshotFrame | null>(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | Extract<WorkerUpdate, { type: 'error' }>>('');
   const [exported, setExported] = useState(0);
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
-    const connection = new SimulationClient();
+    let connection: SimulationClient;
+    try {
+      connection = new SimulationClient();
+    } catch {
+      setFailed(true);
+      return;
+    }
     client.current = connection;
     connection.subscribe((message) => {
       if (message.type === 'snapshot') {
         const { snapshot, ...metadata } = message;
         setUpdate({ ...metadata, readSnapshot: () => snapshot });
-      } else if (message.type === 'error') setError(message.message);
-      else {
+      } else if (message.type === 'error') {
+        if (message.fatal) {
+          setFailed(true);
+          connection.dispose();
+          client.current = null;
+        } else setError(message);
+      } else {
         downloadRun(message.run);
         setExported((v) => v + 1);
       }
@@ -38,7 +52,7 @@ export function useLaboratory() {
       connection.dispose();
       client.current = null;
     };
-  }, []);
+  }, [attempt]);
   useEffect(() => {
     if (!update) return;
     const connection = client.current;
@@ -53,7 +67,21 @@ export function useLaboratory() {
     setError('');
     client.current?.send(command);
   }, []);
-  return { update, send, error, setError, exported };
+  const retry = useCallback(() => {
+    setUpdate(null);
+    setError('');
+    setFailed(false);
+    setAttempt((value) => value + 1);
+  }, []);
+  return {
+    update,
+    send,
+    error: typeof error === 'string' ? error : dictionary[language][error.code ?? 'commandError'],
+    setError,
+    exported,
+    failed,
+    retry,
+  };
 }
 
 function downloadRun(run: RunRecord) {

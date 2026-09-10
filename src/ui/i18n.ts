@@ -1,5 +1,26 @@
 export type Language = 'en' | 'tr';
 const en = {
+  locale: 'en-US',
+  commandError: 'The action could not be completed. Check the settings and try again.',
+  skipToWorld: 'Skip to the simulation',
+  noDeposition:
+    'Food-signal deposition is disabled. Ants can still discover and carry food, but no food-chemical trail is deposited in this run.',
+  noSensing:
+    'Food-signal sensing is disabled. Returning ants can leave chemical traces, but searching ants do not use them to choose a direction.',
+  language: 'Language',
+  speed: 'Speed',
+  layers: 'Signal layers',
+  availableTicks: 'Remaining tick budget',
+  tickError: 'Enter a positive whole number within the remaining tick budget.',
+  versionError: 'This run uses an unsupported model version.',
+  importError:
+    'The run contains invalid settings or an invalid tick count. The current run is unchanged.',
+  workerError:
+    'The simulation engine could not start or stopped unexpectedly. Retry to prepare a new colony.',
+  retry: 'Retry simulation',
+  customWorld: 'Custom world',
+  customWorldNote:
+    'Imported world geometry. The learning guide describes the default EXP-001 world; your results may differ.',
   subtitle: 'Ant Colony Intelligence Laboratory',
   methodology: 'Methodology',
   title: 'The first trail.',
@@ -51,9 +72,9 @@ const en = {
   fit: 'Fit',
   zoomIn: 'Zoom in',
   zoomOut: 'Zoom out',
-  insight: 'No ant planned this route.',
+  insight: 'Local decisions. Collective behavior.',
   explanation:
-    'In this model, a shared path forms when returning ants leave a signal that others can sense.',
+    'In this model, returning ants can leave a signal that others follow. A delivery alone does not prove that a stable shared route has formed.',
   early: 'The colony is exploring. Watch for the first food discovery, then the returning traces.',
   waitingReturn:
     'Food was found. Watch a returning ant leave the first food signal on its way home.',
@@ -74,8 +95,8 @@ const en = {
   history: 'Recent food deliveries',
   noHistory: 'The first delivery will begin this plot.',
   legend: 'Amber + dot: food signal / carrying. Sage + outline: home signal / searching.',
-  zoomHelp: 'Click to inspect · drag to pan · use + / − to zoom',
-  replaying: 'Replaying',
+  zoomHelp: 'Tap to inspect · drag or arrow keys to pan · pinch or + / − to zoom · Home to fit',
+  replaying: 'Ticks remaining',
   completed: 'Paused at',
   exported: 'Run exported; simulation paused.',
   imported: 'Replaying the imported run from tick 0.',
@@ -114,6 +135,26 @@ const en = {
   sensorRadius: 'Show sensors',
 };
 const tr: typeof en = {
+  locale: 'tr-TR',
+  commandError: 'İşlem tamamlanamadı. Ayarları kontrol edip yeniden deneyin.',
+  skipToWorld: 'Simülasyona geç',
+  noDeposition:
+    'Besin izi bırakma kapalı. Karıncalar besini bulup taşıyabilir, ancak bu deneyde kimyasal besin izi bırakılmaz.',
+  noSensing:
+    'Besin izi algılama kapalı. Dönen karıncalar kimyasal iz bırakabilir, ancak arayan karıncalar yön seçerken bu izi kullanmaz.',
+  language: 'Dil',
+  speed: 'Hız',
+  layers: 'İz katmanları',
+  availableTicks: 'Kalan tick bütçesi',
+  tickError: 'Kalan tick bütçesini aşmayan pozitif bir tam sayı girin.',
+  versionError: 'Bu deney dosyası desteklenmeyen bir model sürümü kullanıyor.',
+  importError: 'Deneyin ayarları veya tick sayısı geçersiz. Mevcut deney korunuyor.',
+  workerError:
+    'Simülasyon motoru başlatılamadı veya beklenmedik biçimde durdu. Yeni bir koloni hazırlamak için yeniden deneyin.',
+  retry: 'Simülasyonu yeniden dene',
+  customWorld: 'Özel dünya',
+  customWorldNote:
+    'İçe aktarılan dünya geometrisi. Öğrenme rehberi varsayılan EXP-001 dünyasını anlatır; sonuçlarınız farklı olabilir.',
   subtitle: 'Karınca Kolonisi Zekâ Laboratuvarı',
   methodology: 'Yöntem',
   title: 'İlk iz.',
@@ -165,9 +206,9 @@ const tr: typeof en = {
   fit: 'Sığdır',
   zoomIn: 'Yakınlaştır',
   zoomOut: 'Uzaklaştır',
-  insight: 'Bu yolu hiçbir karınca planlamadı.',
+  insight: 'Yerel kararlar. Kolektif davranış.',
   explanation:
-    'Bu modelde, dönen karıncaların bıraktığı ve diğerlerinin algıladığı sinyalden ortak bir yol oluşur.',
+    'Bu modelde, dönen karıncalar diğerlerinin izleyebileceği bir sinyal bırakabilir. Tek bir teslimat, kalıcı ortak bir yol oluştuğunu kanıtlamaz.',
   early: 'Koloni keşfediyor. İlk besin keşfini, ardından dönüş izlerini gözlemleyin.',
   waitingReturn:
     'Besin bulundu. Dönen bir karıncanın yuvaya giderken bıraktığı besin izini izleyin.',
@@ -189,8 +230,9 @@ const tr: typeof en = {
   history: 'Son besin teslimatları',
   noHistory: 'Grafik ilk besin teslimatıyla başlayacak.',
   legend: 'Kehribar + nokta: besin izi / taşıyan. Adaçayı + çevre: yuva izi / arayan.',
-  zoomHelp: 'İncelemek için tıkla · kaydırmak için sürükle · + / − ile yakınlaştır',
-  replaying: 'Tekrar çalıştırılıyor',
+  zoomHelp:
+    'İncelemek için dokun · sürükle veya yön tuşlarıyla kaydır · iki parmakla veya + / − ile yakınlaştır · Home ile sığdır',
+  replaying: 'Kalan tick',
   completed: 'Duraklatılan tick',
   exported: 'Deney dışa aktarıldı; simülasyon duraklatıldı.',
   imported: 'İçe aktarılan deney tick 0’dan tekrar çalıştırılıyor.',

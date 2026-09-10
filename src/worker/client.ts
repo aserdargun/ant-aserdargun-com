@@ -7,10 +7,12 @@ export class SimulationClient {
     this.worker = new Worker(new URL('./entry.ts', import.meta.url), { type: 'module' });
     this.worker.onmessage = (event: MessageEvent<WorkerUpdate>) =>
       this.listeners.forEach((fn) => fn(event.data));
-    this.worker.onerror = () =>
+    const fail = () =>
       this.listeners.forEach((fn) =>
-        fn({ type: 'error', message: 'The simulation worker could not run. Reload to retry.' }),
+        fn({ type: 'error', message: 'The simulation worker could not run.', fatal: true }),
       );
+    this.worker.addEventListener('error', fail);
+    this.worker.addEventListener('messageerror', fail);
   }
   send(command: WorkerRequest) {
     this.worker.postMessage(command);
