@@ -88,6 +88,14 @@ test('pinch zoom preserves selection and pointer cancellation ends a drag', asyn
   const touch = (x: number, id: number) => ({ x: box.x + x, y: box.y + box.height / 2, id });
   // Compare model pixels, excluding hover/focus styles on the overlaid camera buttons.
   const pixels = () => canvas.evaluate((el: HTMLCanvasElement) => el.toDataURL());
+  // Fit with loaded fonts: a paused canvas does not redraw on font load alone.
+  await page.evaluate(() => document.fonts.ready.then(() => undefined));
+  await page.getByRole('button', { name: 'Fit', exact: true }).click();
+  await page.evaluate(async () => {
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+    });
+  });
   const before = await pixels();
   await session.send('Input.dispatchTouchEvent', {
     type: 'touchStart',

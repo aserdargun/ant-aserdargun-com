@@ -140,9 +140,11 @@ test('keyboard camera controls redraw a paused world without changing the experi
   await expect(page.getByTestId('tick')).toHaveText('0');
   const pixels = () => canvas.evaluate((el: HTMLCanvasElement) => el.toDataURL());
   await canvas.focus();
-  // Capture the baseline after fonts and the scheduled initial canvas paint settle.
+  // A paused canvas does not redraw when fonts finish loading. Fit once with
+  // loaded fonts before capturing the baseline for subsequent camera actions.
+  await page.evaluate(() => document.fonts.ready.then(() => undefined));
+  await canvas.press('Home');
   await page.evaluate(async () => {
-    await document.fonts.ready;
     await new Promise<void>((resolve) => {
       requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
     });
