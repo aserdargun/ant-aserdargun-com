@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, readdir, readFile, writeFile } from 'node:fs/promises';
 import { VERSIONS } from '../src/experiments/config';
 
 async function collect(directory: string): Promise<string[]> {
@@ -14,6 +14,7 @@ async function collect(directory: string): Promise<string[]> {
   return paths.sort();
 }
 
+await copyFile('lab.manifest.json', 'dist/lab.manifest.json');
 const paths = await collect('dist');
 const html = await readFile('dist/index.html', 'utf8');
 assert(html.includes('ANT - Ant Colony Intelligence Laboratory'));

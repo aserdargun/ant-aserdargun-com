@@ -1,3 +1,5 @@
+import { LabControlButton } from '@aserdargun/lab-ui';
+import { manifest } from '../ils/catalog';
 import { useRef, useState } from 'react';
 import { Pause, Play, StepForward, RotateCcw, Download, Upload } from 'lucide-react';
 import type { WorkerCommand, RunnerStatus, Speed } from '../worker/protocol';
@@ -6,6 +8,7 @@ import { TermHelp } from './TermHelp';
 import { MAX_RUN_TICKS } from '../experiments/run';
 
 interface Props {
+  language: 'en' | 'tr';
   status: RunnerStatus;
   tick: number;
   copy: Copy;
@@ -13,7 +16,7 @@ interface Props {
   onReset: () => void;
   onError: (message: string) => void;
 }
-export function Controls({ status, tick, copy: t, send, onReset, onError }: Props) {
+export function Controls({ language, status, tick, copy: t, send, onReset, onError }: Props) {
   const [ticks, setTicks] = useState('1800');
   const fileInput = useRef<HTMLInputElement>(null);
   const fileRead = useRef(0);
@@ -22,7 +25,10 @@ export function Controls({ status, tick, copy: t, send, onReset, onError }: Prop
   return (
     <div className="controls">
       <div className="transport">
-        <button
+        <LabControlButton
+          action={active ? 'pause' : 'play'}
+          capabilities={manifest.capabilities}
+          locale={language}
           className="play-control"
           aria-label={active ? t.pause : t.play}
           disabled={!active && remaining === 0}
@@ -30,11 +36,18 @@ export function Controls({ status, tick, copy: t, send, onReset, onError }: Prop
         >
           {active ? <Pause fill="currentColor" /> : <Play fill="currentColor" />}
           {active ? t.pause : t.play}
-        </button>
-        <button disabled={remaining === 0} onClick={() => send({ type: 'step' })}>
+        </LabControlButton>
+        <LabControlButton
+          action="step"
+          aria-label={t.step}
+          capabilities={manifest.capabilities}
+          locale={language}
+          disabled={remaining === 0}
+          onClick={() => send({ type: 'step' })}
+        >
           <StepForward />
           {t.step}
-        </button>
+        </LabControlButton>
         <div className="speeds" role="group" aria-label={t.speed}>
           {([1, 5, 20, 100] as Speed[]).map((speed) => (
             <button
@@ -46,10 +59,15 @@ export function Controls({ status, tick, copy: t, send, onReset, onError }: Prop
             </button>
           ))}
         </div>
-        <button onClick={onReset}>
+        <LabControlButton
+          action="reset"
+          capabilities={manifest.capabilities}
+          locale={language}
+          onClick={onReset}
+        >
           <RotateCcw />
           <span>{t.reset}</span>
-        </button>
+        </LabControlButton>
         <span className="tick-count">
           <span className="term-label">
             {t.tick}

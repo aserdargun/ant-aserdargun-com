@@ -59,3 +59,7 @@ The static `dist/` artifact targets Azure Static Web Apps Free in West Europe, i
 Pushes to `main` run `.github/workflows/deploy-swa-ant-aserdargun-com.yml`. It installs locked dependencies, checks the scientific and browser contracts, and uploads the prebuilt artifact. Deployment is serialized and uses the repository secret `AZURE_STATIC_WEB_APPS_API_TOKEN_SWA_ANT_ASERDARGUN_COM`. No server runtime or paid Azure component is required.
 
 After deployment, verify the generated HTTPS hostname with `npm run verify:live -- <url>` and run the production browser suite with `PLAYWRIGHT_BASE_URL=<url> npm run test:e2e`. The live suite does not start local servers. Custom-domain binding is a separate publication step.
+
+## ILS v0.1
+
+Canonical content-addressed packages in `vendor/` provide the evidence shell and existing transport controls. One parameterized experiment contract describes the real EXP-001 model, including current applied inputs and imported worlds. Three existing four-step exercises map directly to lesson contracts. `?lesson=read-trail|evaporation|local-decisions&lang=en|tr` selects a guide and language; unsupported `ils` payloads do not alter a run. The worker/kernel and replay validation remain unchanged. Simulated fields, calculated observer metrics and user inputs are distinct. Home chemical remains observational; returning ants use idealized path integration.

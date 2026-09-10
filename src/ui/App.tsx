@@ -1,3 +1,6 @@
+import { LabShell } from '@aserdargun/lab-ui';
+import '@aserdargun/lab-ui/styles.css';
+import { manifest, experiments, initialRoute } from '../ils/catalog';
 import { useEffect, useState } from 'react';
 import { Shuffle, ArrowUpRight, BookOpen, ArrowDown } from 'lucide-react';
 import { useLaboratory } from './useLaboratory';
@@ -19,7 +22,9 @@ import { defaultConfig, parseConfig } from '../experiments/config';
 const defaultWorld = JSON.stringify(parseConfig(defaultConfig()).world);
 
 export default function App() {
+  const [route] = useState(() => initialRoute(location.search));
   const [language, setLanguage] = useState<Language>(() => {
+    if (route.locale) return route.locale;
     try {
       return localStorage.getItem('ant-language') === 'tr' ? 'tr' : 'en';
     } catch {
@@ -169,6 +174,7 @@ export default function App() {
                 sensors={sensors}
               />
               <Controls
+                language={language}
                 status={update.status}
                 tick={s.tick}
                 copy={t}
@@ -212,7 +218,14 @@ export default function App() {
             <TermHelp term="abstraction" label={t.abstraction} />
           </span>
         </section>
-        <LearningGuide language={language} />
+        <LearningGuide language={language} initialLesson={route.lesson} />
+        <LabShell manifest={manifest} experiment={experiments[0]} locale={language}>
+          <p>
+            {language === 'en'
+              ? 'Current applied configuration; imported custom worlds remain part of the experiment.'
+              : 'Mevcut uygulanmış yapılandırma; içe aktarılan özel dünyalar deneyin parçası olarak kalır.'}
+          </p>
+        </LabShell>
         <footer>
           <span>{t.scope}</span>
           <a href="https://swi.aserdargun.com" target="_blank" rel="noreferrer">

@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "0.1",
+  "id": "ant",
+  "code": "ant",
+  "name": "Ant Colony Intelligence Laboratory",
+  "canonicalUrl": "https://ant.aserdargun.com/",
+  "type": "interactive-lab",
+  "parentApp": "swi",
+  "status": "live",
+  "tagline": {
+    "en": "From a local decision to a shared trail.",
+    "tr": "Yerel karardan ortak bir ize."
+  },
+  "guidingQuestion": {
+    "en": "How do local observations produce a collective foraging pattern?",
+    "tr": "Yerel gözlemler nasıl kolektif besin arama örüntüsü oluşturur?"
+  },
+  "concepts": ["concept:stigmergy", "concept:local-observation", "concept:collective-foraging"],
+  "capabilities": {
+    "play": true,
+    "pause": true,
+    "step": true,
+    "reset": true,
+    "guidedLesson": true,
+    "experiments": true,
+    "assumptions": true,
+    "evidence": true
+  },
+  "experiments": [
+    {
+      "id": "local-foraging",
+      "title": {
+        "en": "Local rules and shared trails",
+        "tr": "Yerel kurallar ve ortak izler"
+      },
+      "route": "/"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "read-trail",
+      "title": {
+        "en": "Read the first trail",
+        "tr": "İlk izi okuyun"
+      },
+      "route": "/?lesson=read-trail#learning"
+    },
+    {
+      "id": "evaporation",
+      "title": {
+        "en": "Change one parameter",
+        "tr": "Tek parametreyi değiştirin"
+      },
+      "route": "/?lesson=evaporation#learning"
+    },
+    {
+      "id": "local-decisions",
+      "title": {
+        "en": "Follow one ant",
+        "tr": "Bir karıncayı izleyin"
+      },
+      "route": "/?lesson=local-decisions#learning"
+    }
+  ],
+  "evidencePolicy": {
+    "summary": {
+      "en": "Simulated agents and fields; calculated observer metrics; applied user inputs. No species-calibrated measurements or guaranteed optimal paths.",
+      "tr": "Simüle ajanlar ve alanlar; hesaplanan gözlem metrikleri; uygulanmış kullanıcı girdileri. Türe kalibre ölçüm veya garantili en iyi yol yoktur."
+    },
+    "allowedKinds": ["simulated", "calculated", "user-input"]
+  },
+  "assumptions": [
+    {
+      "id": "local-rules",
+      "title": {
+        "en": "Local rules and idealized navigation",
+        "tr": "Yerel kurallar ve idealize gezinme"
+      },
+      "description": {
+        "en": "Ants receive three local probes, nearby food/nest bearing and a private home vector. They do not receive colony metrics or a global resource map. Home chemical is observational; returning ants use idealized path integration.",
+        "tr": "Karıncalar üç yerel prob, yakındaki besin/yuva yönü ve özel yuva vektörü alır. Koloni metrikleri veya küresel kaynak haritası almazlar. Yuva kimyasalı gözlemseldir; dönen karıncalar idealize yol bütünlemesi kullanır."
+      }
+    },
+    {
+      "id": "abstract-units",
+      "title": {
+        "en": "Abstract model units",
+        "tr": "Soyut model birimleri"
+      },
+      "description": {
+        "en": "Ticks, distance, food and chemical values are not species-calibrated. A seeded repeatable run explains these rules; biological conclusions require separate evidence.",
+        "tr": "Tick, uzaklık, besin ve kimyasal değerleri türe kalibre değildir. Tohumlu tekrarlanabilir yürütme bu kuralları açıklar; biyolojik sonuçlar ayrı kanıt gerektirir."
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "schemaVersion": "0.1",
+      "id": "world",
+      "kind": "simulated",
+      "verificationStatus": "not-applicable",
+      "label": {
+        "en": "Ant trajectories and chemical fields",
+        "tr": "Karınca yolları ve kimyasal alanlar"
+      },
+      "notes": {
+        "en": "The deterministic worker produces a model state, not observed animal behavior. A bright trail does not prove a shortest path.",
+        "tr": "Belirlenimci işçi model durumu üretir; gözlenmiş hayvan davranışı değildir. Parlak iz en kısa yolu kanıtlamaz."
+      },
+      "assumptionRefs": ["local-rules", "abstract-units"]
+    },
+    {
+      "schemaVersion": "0.1",
+      "id": "metrics",
+      "kind": "calculated",
+      "verificationStatus": "not-applicable",
+      "label": {
+        "en": "Delivery, throughput and coverage",
+        "tr": "Teslimat, hız ve kapsama"
+      },
+      "notes": {
+        "en": "Observer metrics are calculated from the simulated run and never fed into ant decisions. Imported metrics are recomputed.",
+        "tr": "Gözlem metrikleri simüle yürütmeden hesaplanır ve karınca kararlarına aktarılmaz. İçe aktarılan metrikler yeniden hesaplanır."
+      },
+      "assumptionRefs": ["local-rules", "abstract-units"],
+      "calculatedFrom": ["world"]
+    },
+    {
+      "schemaVersion": "0.1",
+      "id": "inputs",
+      "kind": "user-input",
+      "verificationStatus": "not-applicable",
+      "label": {
+        "en": "Current configuration and seed",
+        "tr": "Mevcut yapılandırma ve tohum"
+      },
+      "notes": {
+        "en": "The applied configuration, including an imported custom world, defines the current experiment. Compare equal tick budgets and preserve the full configuration.",
+        "tr": "Uygulanan yapılandırma, içe aktarılan özel dünya dahil, mevcut deneyi belirler. Eşit tick bütçelerini karşılaştırın ve tam yapılandırmayı koruyun."
+      },
+      "assumptionRefs": ["local-rules", "abstract-units"]
+    }
+  ],
+  "related": {
+    "theory": [
+      {
+        "id": "swi",
+        "label": {
+          "en": "Swarm Intelligence · SWI",
+          "tr": "Sürü Zekâsı · SWI"
+        },
+        "url": "https://swi.aserdargun.com/"
+      }
+    ],
+    "labs": [
+      {
+        "id": "bee",
+        "label": {
+          "en": "Compare social recruitment · BEE",
+          "tr": "Sosyal katılımı karşılaştır · BEE"
+        },
+        "url": "https://bee.aserdargun.com/",
+        "localizedUrls": {
+          "en": "https://bee.aserdargun.com/?lang=en",
+          "tr": "https://bee.aserdargun.com/?lang=tr"
+        }
+      }
+    ]
+  }
+}

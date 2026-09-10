@@ -1,0 +1,40 @@
+[
+  {
+    "schemaVersion": "0.1",
+    "id": "local-foraging",
+    "title": {
+      "en": "Local rules and shared trails",
+      "tr": "Yerel kurallar ve ortak izler"
+    },
+    "guidingQuestion": {
+      "en": "How do local observations produce a collective foraging pattern?",
+      "tr": "Yerel gözlemler nasıl kolektif besin arama örüntüsü oluşturur?"
+    },
+    "concepts": ["concept:stigmergy", "concept:local-observation", "concept:collective-foraging"],
+    "learningObjectives": [
+      {
+        "en": "Distinguish local decisions from observer metrics.",
+        "tr": "Yerel kararları gözlem metriklerinden ayırın."
+      }
+    ],
+    "observations": [
+      {
+        "id": "trail",
+        "label": {
+          "en": "Trail and deliveries",
+          "tr": "İz ve teslimatlar"
+        },
+        "explanation": {
+          "en": "Inspect discoveries, returning ants and deliveries separately. A stable trail is not guaranteed.",
+          "tr": "Keşifleri, dönen karıncaları ve teslimatları ayrı inceleyin. Kalıcı iz garanti değildir."
+        },
+        "evidenceRefs": ["world", "metrics"]
+      }
+    ],
+    "assumptionRefs": ["local-rules", "abstract-units"],
+    "evidenceRefs": ["world", "metrics", "inputs"],
+    "config": {
+      "experimentVersion": "EXP-001@1"
+    }
+  }
+]

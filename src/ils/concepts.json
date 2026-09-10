@@ -1,0 +1,23 @@
+[
+  {
+    "id": "concept:stigmergy",
+    "label": {
+      "en": "Stigmergy",
+      "tr": "Stigmerji"
+    }
+  },
+  {
+    "id": "concept:local-observation",
+    "label": {
+      "en": "Local observation",
+      "tr": "Yerel gözlem"
+    }
+  },
+  {
+    "id": "concept:collective-foraging",
+    "label": {
+      "en": "Collective foraging",
+      "tr": "Kolektif besin arama"
+    }
+  }
+]

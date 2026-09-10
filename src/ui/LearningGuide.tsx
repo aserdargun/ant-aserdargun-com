@@ -4,8 +4,14 @@ import type { Language } from './i18n';
 import { learningCopy, termGroups, terms } from './learning';
 import { TermHelp } from './TermHelp';
 
-export const LearningGuide = memo(function LearningGuide({ language }: { language: Language }) {
-  const [selected, setSelected] = useState(0);
+export const LearningGuide = memo(function LearningGuide({
+  language,
+  initialLesson = 0,
+}: {
+  language: Language;
+  initialLesson?: number;
+}) {
+  const [selected, setSelected] = useState(initialLesson);
   const t = learningCopy[language];
   const lesson = t.lessons[selected];
   return (
