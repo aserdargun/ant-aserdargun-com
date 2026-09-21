@@ -1,20 +1,25 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { waitForExpectedCommit } from './release-readiness';
 
 const origin = new URL(process.argv[2]);
 assert(origin.protocol === 'https:', 'Live verification requires HTTPS');
 const expected =
   process.argv[3] || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-const releaseResponse = await fetch(new URL('/release.json', origin), {
-  signal: AbortSignal.timeout(20000),
-});
-assert.equal(releaseResponse.status, 200);
-assert(releaseResponse.headers.get('content-type')?.includes('application/json'));
-assert(releaseResponse.headers.get('cache-control')?.includes('no-store'));
-const release = await releaseResponse.json();
-assert.equal(release.application, 'ANT');
-assert.equal(release.commit, expected);
+const release = await waitForExpectedCommit(async () => {
+  const response = await fetch(new URL('/release.json', origin), {
+    cache: 'no-store',
+    signal: AbortSignal.timeout(20000),
+  });
+  assert.equal(response.status, 200);
+  assert(response.headers.get('content-type')?.includes('application/json'));
+  assert(response.headers.get('cache-control')?.includes('no-store'));
+  const manifest = await response.json();
+  assert.equal(manifest.application, 'ANT');
+  assert.match(manifest.commit, /^[a-f0-9]{40}$/);
+  return manifest;
+}, expected);
 assert.equal(release.sourceDirty, false, 'Release must come from a verified clean source tree');
 assert(release.files.length > 0);
 for (const file of release.files) {

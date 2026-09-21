@@ -60,6 +60,8 @@ Pushes to `main` run `.github/workflows/deploy-swa-ant-aserdargun-com.yml`. It i
 
 After deployment, verify the generated HTTPS hostname with `npm run verify:live -- <url>` and run the production browser suite with `PLAYWRIGHT_BASE_URL=<url> npm run test:e2e`. The live suite does not start local servers. Use the same verifier against `https://ant.aserdargun.com/` to check the custom domain independently.
 
+Azure can finish uploading before the public release manifest changes. The verifier checks up to 13 valid manifests, waiting five seconds between stale commit responses. It fails if the expected commit never appears. Invalid responses fail immediately; once the commit matches, clean-source, asset hash, MIME, security-header and missing-asset checks must all pass.
+
 ## ILS v0.1
 
 Canonical content-addressed packages in `vendor/` provide the evidence shell and existing transport controls. One parameterized experiment contract describes the real EXP-001 model, including current applied inputs and imported worlds. Three existing four-step exercises map directly to lesson contracts. `?lesson=read-trail|evaporation|local-decisions&lang=en|tr` selects a guide and language; unsupported `ils` payloads do not alter a run. The worker/kernel and replay validation remain unchanged. Simulated fields, calculated observer metrics and user inputs are distinct. Home chemical remains observational; returning ants use idealized path integration.
