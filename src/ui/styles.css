@@ -759,6 +759,11 @@ footer {
   font-size: 10px;
   color: var(--muted);
 }
+.portfolio-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
 footer a {
   display: inline-flex;
   align-items: center;

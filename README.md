@@ -14,7 +14,7 @@ npm run dev
 Open [localhost:4187](http://127.0.0.1:4187). Stop the foreground server with **Ctrl+C**. The port is strict: an occupied port fails instead of silently serving a different checkout. A normal first visit starts at tick zero; reduced-motion users start paused and can run or step explicitly.
 
 ```bash
-npm run validate       # lint, 17 headless tests, strict UI + no-DOM kernel type checks, build, format
+npm run validate       # lint, headless tests, strict UI + no-DOM kernel type checks, build, format
 npx playwright install chromium
 npm run test:e2e       # production behavior plus development/production crash regressions
 npm run evidence       # fixed-seed signaling ablation and headless performance measurements
@@ -46,19 +46,19 @@ The **Learning guide** provides three short exercises: reading the first trail, 
 
 [Assessment](docs/ASSESSMENT.md) · [Product](docs/PRODUCT.md) · [Architecture](docs/ARCHITECTURE.md) · [Simulation equations](docs/SIMULATION.md) · [Experiments](docs/EXPERIMENTS.md) · [Metric definitions](docs/METRICS.md) · [Research](docs/RESEARCH.md)
 
-This slice covers the foundation, living colony, chemical behavior, guided interpretation and a usable visual instrument. EXP-002–010, synchronized A/B comparison and sandbox editing are subsequent milestones. ANT remains independently runnable; the SWI relationship is a conceptual link, not an implementation dependency.
+This slice covers the foundation, living colony, chemical behavior, guided interpretation and a usable visual instrument. EXP-002–010, synchronized A/B comparison and sandbox editing are subsequent milestones. ANT remains independently runnable. In the [aserdargun.com learning system](https://aserdargun.com/), it is a companion laboratory to [SWI](https://swi.aserdargun.com/en/); this relationship describes a learning path, not a shared simulation runtime. BEE explores a different communication mechanism. ANT provides one experiment and three guided exercises; its synchronized A/B comparison remains future work.
 
 ## Publication
 
 Source repository: [aserdargun/ant-aserdargun-com](https://github.com/aserdargun/ant-aserdargun-com).
 
-Production address: [ANT on Azure](https://ambitious-pebble-0ec95b303.3.azurestaticapps.net).
+Canonical address: [ANT](https://ant.aserdargun.com/). Azure hostname: [ANT on Azure](https://ambitious-pebble-0ec95b303.3.azurestaticapps.net).
 
 The static `dist/` artifact targets Azure Static Web Apps Free in West Europe, in `aserdargun subscription 2`, using `rg-ant-aserdargun-com` and `swa-ant-aserdargun-com`. Each build validates its entry assets and Worker, then generates `release.json` with the source commit, a `sourceDirty` flag and SHA-256 asset manifest. Local changes are explicitly marked; the live verifier rejects artifacts built from a modified working tree. GitHub publication precedes Azure provisioning.
 
 Pushes to `main` run `.github/workflows/deploy-swa-ant-aserdargun-com.yml`. It installs locked dependencies, checks the scientific and browser contracts, and uploads the prebuilt artifact. Deployment is serialized and uses the repository secret `AZURE_STATIC_WEB_APPS_API_TOKEN_SWA_ANT_ASERDARGUN_COM`. No server runtime or paid Azure component is required.
 
-After deployment, verify the generated HTTPS hostname with `npm run verify:live -- <url>` and run the production browser suite with `PLAYWRIGHT_BASE_URL=<url> npm run test:e2e`. The live suite does not start local servers. Custom-domain binding is a separate publication step.
+After deployment, verify the generated HTTPS hostname with `npm run verify:live -- <url>` and run the production browser suite with `PLAYWRIGHT_BASE_URL=<url> npm run test:e2e`. The live suite does not start local servers. Use the same verifier against `https://ant.aserdargun.com/` to check the custom domain independently.
 
 ## ILS v0.1
 

@@ -42,6 +42,9 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = language;
     document.title = `ANT - ${dictionary[language].subtitle}`;
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute('content', dictionary[language].description);
     try {
       localStorage.setItem('ant-language', language);
     } catch {
@@ -228,9 +231,18 @@ export default function App() {
         </LabShell>
         <footer>
           <span>{t.scope}</span>
-          <a href="https://swi.aserdargun.com" target="_blank" rel="noreferrer">
-            SWI · Swarm Intelligence <ArrowUpRight />
-          </a>
+          <nav className="portfolio-links" aria-label={t.portfolioNavigation}>
+            <a
+              href={`https://aserdargun.com/${language === 'tr' ? 'tr/' : ''}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t.portfolio} <ArrowUpRight aria-hidden="true" />
+            </a>
+            <a href={`https://swi.aserdargun.com/${language}/`} target="_blank" rel="noreferrer">
+              {t.relatedResearch} <ArrowUpRight aria-hidden="true" />
+            </a>
+          </nav>
         </footer>
         <span className="visually-hidden" role="status">
           {exported > 0 ? t.exported : ''}

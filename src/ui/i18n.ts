@@ -22,6 +22,11 @@ const en = {
   customWorldNote:
     'Imported world geometry. The learning guide describes the default EXP-001 world; your results may differ.',
   subtitle: 'Ant Colony Intelligence Laboratory',
+  description:
+    'Explore local rules, pheromone trails and collective foraging in a reproducible educational simulation. One experiment, three guided exercises; no species calibration.',
+  portfolio: 'aserdargun.com · Learning system',
+  relatedResearch: 'SWI · Swarm Intelligence',
+  portfolioNavigation: 'Related learning resources',
   methodology: 'Methodology',
   title: 'The first trail.',
   experiment: 'The experiment',
@@ -33,7 +38,7 @@ const en = {
   rule3: 'Leave a chemical trace',
   parameters: 'Parameters',
   population: 'Population',
-  evaporation: 'Food evaporation',
+  evaporation: 'Food-signal evaporation',
   exploration: 'Exploration',
   apply: 'Apply & restart',
   hypothesis: 'What changes when the colony forgets faster?',
@@ -156,6 +161,11 @@ const tr: typeof en = {
   customWorldNote:
     'İçe aktarılan dünya geometrisi. Öğrenme rehberi varsayılan EXP-001 dünyasını anlatır; sonuçlarınız farklı olabilir.',
   subtitle: 'Karınca Kolonisi Zekâ Laboratuvarı',
+  description:
+    'Tekrarlanabilir bir eğitim simülasyonunda yerel kuralları, feromon izlerini ve kolektif besin aramayı keşfedin. Bir deney, üç rehberli çalışma; türe kalibre edilmemiştir.',
+  portfolio: 'aserdargun.com · Öğrenme sistemi',
+  relatedResearch: 'SWI · Sürü Zekâsı',
+  portfolioNavigation: 'İlgili öğrenme kaynakları',
   methodology: 'Yöntem',
   title: 'İlk iz.',
   experiment: 'Deney',
@@ -184,7 +194,7 @@ const tr: typeof en = {
   newSeed: 'Yeni seed',
   tick: 'TICK',
   colony: 'Koloni',
-  delivered: 'Taşınan besin',
+  delivered: 'Teslim edilen besin',
   returning: 'Dönen',
   searching: 'Arayan',
   coverage: 'Kapsama',
@@ -222,9 +232,9 @@ const tr: typeof en = {
   close: 'Kapat',
   loading: 'Koloni hazırlanıyor…',
   homeNote:
-    'Yuva izi gözlem içindir. Dönen karıncalar kendi hareketinden hesapladığı yuva vektörünü kullanır.',
+    'Yuva izi gözlem içindir. Dönen karıncalar kendi hareketlerinden hesapladıkları yuva vektörünü kullanır.',
   unitsNote: 'Model mesafesi ve tick; biyolojik birimlere kalibre edilmemiştir.',
-  throughput: 'Besin / 1.000 tick',
+  throughput: 'Teslimat / 1.000 tick',
   distance: 'Ort. gidiş dönüş',
   remaining: 'Kalan besin',
   history: 'Son besin teslimatları',
@@ -255,7 +265,7 @@ const tr: typeof en = {
   fieldBody:
     'Alanlar dört komşulu bir ızgara kullanır. Yayılım yoğunluğu dağıtır; sönüm her tick sabit bir oranı kaldırır. Besin izi, besin alımından sonra kat edilen mesafeyle azalır. Yuva izi gösterilir ve algılanır, ancak bu sürümde yönlendirme yapmaz.',
   metricBody:
-    'Kapsama, girilen geçilebilir ızgara hücrelerinin yüzdesidir. Akış, son 1.000 tick’teki teslimatları bu pencereye göre ölçekler; başlangıçta geçen tick kullanılır. Ortalama gidiş dönüş, yalnızca tamamlanan teslimatların keşif ve dönüş mesafesini içerir.',
+    'Kapsama, girilen geçilebilir ızgara hücrelerinin yüzdesidir. Teslimat hızı, son 1.000 tick’teki teslimatları bu pencereye göre ölçekler; başlangıçta geçen tick kullanılır. Ortalama gidiş dönüş, yalnızca tamamlanan teslimatların keşif ve dönüş mesafesini içerir.',
   replayBody:
     'Dışa aktarım tüm başlangıç koşullarını, seed’i, model sürümlerini ve ulaşılan tick sayısını kaydeder. İçe aktarım deneyi sıfırdan hesaplar. Aynı JavaScript ortamında tam tekrar test edilmiştir; tüm tarayıcı motorları arasında bit düzeyinde özdeşlik garanti edilmez.',
   caveat:

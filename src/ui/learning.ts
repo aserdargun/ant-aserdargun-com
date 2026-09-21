@@ -309,7 +309,7 @@ const trTerms: Record<TermId, Term> = {
     observe: 'Keşif, teslimattan önce olur: karıncanın besini hâlâ yuvaya götürmesi gerekir.',
   },
   delivered: {
-    title: 'Taşınan besin',
+    title: 'Teslim edilen besin',
     definition: 'Yuvaya teslim edilen toplam besin birimi.',
     model:
       'Her başarılı dönüş bir birim ekler. Henüz taşınmakta olan besin dahil değildir. Grafik, bu birikimli sayacı son tick’ler boyunca gösterir.',
@@ -325,7 +325,7 @@ const trTerms: Record<TermId, Term> = {
       'Çok sayıda dönen karınca yakın zamanda besin bulunduğunu gösterebilir; besinlerin yuvaya ulaştığı anlamına gelmez.',
   },
   throughput: {
-    title: 'Besin / 1.000 tick · teslimat hızı',
+    title: 'Teslimat / 1.000 tick · teslimat hızı',
     definition: 'Son dönemdeki teslimatların 1.000 model tick’i başına ifade edilen hızı.',
     model:
       'Son 1.000 tick’teki teslimatları sayar. Başlangıçta daha kısa olan geçen süreyi bu pencereye ölçekler.',
@@ -346,7 +346,7 @@ const trTerms: Record<TermId, Term> = {
     model:
       'Başlangıç besini = kalan besin + dönen karıncaların taşıdığı besin + teslim edilen besin.',
     observe:
-      'Kalan besin, alım anında azalır; taşınan besin sayacı ise ancak yuvaya teslimde artar.',
+      'Kalan besin, alım anında azalır; teslim edilen besin sayacı ise ancak yuvaya teslimde artar.',
   },
   probes: {
     title: 'İz algısı · sensör örnekleri',
@@ -632,7 +632,7 @@ export const learningCopy: Record<Language, LearningCopy> = {
           },
           {
             title: 'Gözlemleyin',
-            body: 'Besin izi katmanını seçip çalıştırın. İlk keşfi, ardından Dönen ve Taşınan besin sayaçlarını izleyin. 20× hızla sonraki aşamalara daha çabuk ulaşabilirsiniz.',
+            body: 'Besin izi katmanını seçip çalıştırın. İlk keşfi, ardından Dönen ve Teslim edilen besin sayaçlarını izleyin. 20× hızla sonraki aşamalara daha çabuk ulaşabilirsiniz.',
           },
           {
             title: 'İlişki kurun',

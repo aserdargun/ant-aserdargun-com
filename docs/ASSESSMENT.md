@@ -2,9 +2,11 @@
 
 Date: 2026-09-06. Scope: the first vertical slice in sections 52–55 of the supplied product brief.
 
-## 1. Current state
+> Historical design assessment, written before implementation. For the current product and completed checks, see [PRODUCT.md](PRODUCT.md) and [VALIDATION.md](VALIDATION.md).
 
-The workspace is an empty initialized Git repository, on unborn `master`, without a remote, commits, files, dependencies, or inherited AGENTS.md. Node 22.23.1 and npm 10.9.8 are available. No existing conventions or user changes require migration. Implementation is authorized by the supplied brief; publishing is outside this local slice.
+## 1. Initial state — 2026-09-06
+
+At the time of this assessment, the workspace was an empty initialized Git repository, on unborn `master`, without a remote, commits, files, dependencies, or inherited AGENTS.md. Node 22.23.1 and npm 10.9.8 are available. No existing conventions or user changes require migration. Implementation is authorized by the supplied brief; publishing is outside this local slice.
 
 ## 2. Directory architecture
 

@@ -74,11 +74,11 @@
       "id": "local-rules",
       "title": {
         "en": "Local rules and idealized navigation",
-        "tr": "Yerel kurallar ve idealize gezinme"
+        "tr": "Yerel kurallar ve idealize yön bulma"
       },
       "description": {
         "en": "Ants receive three local probes, nearby food/nest bearing and a private home vector. They do not receive colony metrics or a global resource map. Home chemical is observational; returning ants use idealized path integration.",
-        "tr": "Karıncalar üç yerel prob, yakındaki besin/yuva yönü ve özel yuva vektörü alır. Koloni metrikleri veya küresel kaynak haritası almazlar. Yuva kimyasalı gözlemseldir; dönen karıncalar idealize yol bütünlemesi kullanır."
+        "tr": "Karıncalar üç yerel prob, yakındaki besin/yuva yönü ve kendi yuva vektörlerini alır. Koloni metrikleri veya küresel kaynak haritası almazlar. Yuva kimyasalı gözlemseldir; dönen karıncalar idealize yol bütünlemesi kullanır."
       }
     },
     {
@@ -89,7 +89,7 @@
       },
       "description": {
         "en": "Ticks, distance, food and chemical values are not species-calibrated. A seeded repeatable run explains these rules; biological conclusions require separate evidence.",
-        "tr": "Tick, uzaklık, besin ve kimyasal değerleri türe kalibre değildir. Tohumlu tekrarlanabilir yürütme bu kuralları açıklar; biyolojik sonuçlar ayrı kanıt gerektirir."
+        "tr": "Tick, uzaklık, besin ve kimyasal değerleri türe kalibre değildir. Seed ile tekrarlanabilir deney bu kuralları açıklar; biyolojik sonuçlar ayrı kanıt gerektirir."
       }
     }
   ],
@@ -105,7 +105,7 @@
       },
       "notes": {
         "en": "The deterministic worker produces a model state, not observed animal behavior. A bright trail does not prove a shortest path.",
-        "tr": "Belirlenimci işçi model durumu üretir; gözlenmiş hayvan davranışı değildir. Parlak iz en kısa yolu kanıtlamaz."
+        "tr": "Deterministik simülasyon motoru model durumu üretir; gözlenmiş hayvan davranışı değildir. Parlak iz en kısa yolu kanıtlamaz."
       },
       "assumptionRefs": ["local-rules", "abstract-units"]
     },
@@ -116,7 +116,7 @@
       "verificationStatus": "not-applicable",
       "label": {
         "en": "Delivery, throughput and coverage",
-        "tr": "Teslimat, hız ve kapsama"
+        "tr": "Teslimat, teslimat hızı ve kapsama"
       },
       "notes": {
         "en": "Observer metrics are calculated from the simulated run and never fed into ant decisions. Imported metrics are recomputed.",
@@ -132,7 +132,7 @@
       "verificationStatus": "not-applicable",
       "label": {
         "en": "Current configuration and seed",
-        "tr": "Mevcut yapılandırma ve tohum"
+        "tr": "Mevcut yapılandırma ve seed"
       },
       "notes": {
         "en": "The applied configuration, including an imported custom world, defines the current experiment. Compare equal tick budgets and preserve the full configuration.",
@@ -149,7 +149,11 @@
           "en": "Swarm Intelligence · SWI",
           "tr": "Sürü Zekâsı · SWI"
         },
-        "url": "https://swi.aserdargun.com/"
+        "url": "https://swi.aserdargun.com/",
+        "localizedUrls": {
+          "en": "https://swi.aserdargun.com/en/",
+          "tr": "https://swi.aserdargun.com/tr/"
+        }
       }
     ],
     "labs": [

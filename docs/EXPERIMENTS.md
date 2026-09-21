@@ -1,8 +1,8 @@
 # EXP-001: The first trail
 
-The learning goal is to observe how local chemical feedback can recruit foragers without a planned route. The prompt is: “What changes when the colony forgets faster?” Food evaporation provides negative feedback; deposition and recruitment provide positive feedback; exploration creates opportunities for discovery.
+The learning goal is to observe how local chemical feedback can recruit foragers without a planned route. The prompt is: “What changes when the colony forgets faster?” Food-signal evaporation provides negative feedback; deposition and recruitment provide positive feedback; exploration creates opportunities for discovery.
 
-Start from tick zero. Record a seed, geometry, brain/math versions and observation horizon, then change one of population, food evaporation or exploration while retaining the other settings. Restart to apply the changed configuration. Export each outcome with its inputs within the 100,000-tick replay cap. Repeat across seeds before generalizing. The interface exposes one experiment; paired runs are a manual procedure, not a synchronized A/B feature.
+Start from tick zero. Record a seed, geometry, brain/math versions and observation horizon, then change one of population, food-signal evaporation or exploration while retaining the other settings. Restart to apply the changed configuration. Export each outcome with its inputs within the 100,000-tick replay cap. Repeat across seeds before generalizing. The interface exposes one experiment; paired runs are a manual procedure, not a synchronized A/B feature.
 
 ## What constitutes evidence
 

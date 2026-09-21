@@ -80,7 +80,7 @@ test('pause, exact stepping, speed, parameter restart and hypothesis retention',
   await page
     .getByLabel('What changes when the colony forgets faster?', { exact: true })
     .fill('I predict a weaker food trail.');
-  const evaporation = page.getByRole('slider', { name: 'Food evaporation', exact: true });
+  const evaporation = page.getByRole('slider', { name: 'Food-signal evaporation', exact: true });
   await evaporation.focus();
   await evaporation.press('Home');
   for (let i = 0; i < 9; i++) await evaporation.press('ArrowRight');
@@ -218,9 +218,9 @@ test('imported full-range parameters remain editable and a smaller world fits au
   await expect(page.getByRole('spinbutton', { name: 'Population', exact: true })).toHaveValue(
     '1500',
   );
-  await expect(page.getByRole('spinbutton', { name: 'Food evaporation', exact: true })).toHaveValue(
-    '0',
-  );
+  await expect(
+    page.getByRole('spinbutton', { name: 'Food-signal evaporation', exact: true }),
+  ).toHaveValue('0');
   await expect(page.getByRole('spinbutton', { name: 'Exploration', exact: true })).toHaveValue(
     '0.12345',
   );

@@ -1,5 +1,15 @@
 # V0.1 validation record
 
+## Content and portfolio review — 2026-09-21
+
+- Local `npm run validate` passed: 19 headless tests in eight files, lint, strict UI/no-DOM kernel type checks, production build and formatting. The pinned 6,000-tick scientific snapshot is unchanged; no simulation or replay semantics changed.
+- `ANT_E2E_PORT=4288 npm run test:e2e -- --output=/tmp/ant-content-e2e` passed all 21 Chromium tests (19 production, two development), including all 26 term dialogs, three EN/TR lessons, replay, recovery, accessibility and responsive checks.
+- An additional local Chromium check at 1536×1024 and 390×844 verified step → language switch preserves tick 1 and the selected lesson, the revised methodology, localized description and SWI/portfolio links. ANT and the EN/TR portfolio application entries had no horizontal overflow; ANT reported no console or page errors. Browser plugin not available; the installed Playwright runner was used.
+- The existing public release was independently checked with `npm run verify:live -- https://ant.aserdargun.com/`: commit `81387b76f7e1ca92a6f51433b924f56f7be2a7b1`, built 2026-09-10, clean-source manifest, all 22 asset hashes and MIME types matched. Both SWI locale destinations returned HTTP 200. These checks verify the release that preceded this content review. Publication of the reviewed changes is tracked separately by the deployment workflow and the live `release.json` commit.
+- The parent portfolio’s ANT entry now describes one experiment, three guided exercises, observational home chemical, idealized path integration and the pending synchronized A/B milestone. Its verification date is separate from the unchanged September 10 release date.
+
+The entries below are dated historical records, not current test counts or publication status.
+
 ## Maintenance verification — 2026-09-10
 
 - 17 headless tests passed. The original 6,000-tick scientific snapshot hash remains unchanged; simulation, brain and math versions are unchanged.
@@ -110,4 +120,4 @@ npm run verify:live -- https://ambitious-pebble-0ec95b303.3.azurestaticapps.net
 PLAYWRIGHT_BASE_URL=https://ambitious-pebble-0ec95b303.3.azurestaticapps.net npm run test:e2e
 ```
 
-The live browser command runs the 10 production tests against Azure without starting local servers. Deployment completion additionally requires the Azure production environment to be `Ready` on `main`, a successful workflow for the current commit, matching local/remote/release SHAs, and a clean worktree. Custom-domain and DNS binding are outside this deployment.
+The live browser command runs the current production test suite against Azure without starting local servers. Deployment completion additionally requires the Azure production environment to be `Ready` on `main`, a successful workflow for the current commit, matching local/remote/release SHAs, and a clean worktree. Verify the custom domain separately with `npm run verify:live -- https://ant.aserdargun.com/`; the dated record above identifies the latest check.
