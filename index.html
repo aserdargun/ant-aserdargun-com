@@ -9,6 +9,20 @@
       content="Explore local rules, pheromone trails and collective foraging in a reproducible educational simulation. One experiment, three guided exercises; no species calibration."
     />
     <link rel="canonical" href="https://ant.aserdargun.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ANT — Ant Colony Intelligence Laboratory" />
+    <meta
+      property="og:description"
+      content="SWI’s companion ant-colony lab: one reproducible experiment, three guided exercises and run replay. Explore local rules, food-pheromone trails and evaporation. Home chemical is observational; returning ants use idealized path integration. No species calibration or guaranteed shortest path; synchronized A/B is future work."
+    />
+    <meta property="og:url" content="https://ant.aserdargun.com/" />
+    <meta property="og:site_name" content="aserdargun.com" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="ANT — Ant Colony Intelligence Laboratory" />
+    <meta
+      name="twitter:description"
+      content="SWI’s companion ant-colony lab: one reproducible experiment, three guided exercises and run replay. Explore local rules, food-pheromone trails and evaporation. No species calibration or guaranteed shortest path."
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -16,6 +30,36 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div lang="en">
+        <h1>ANT - Ant Colony Intelligence Laboratory</h1>
+        <p>
+          A reproducible educational simulation of ant-colony foraging. Ants follow a few local
+          rules — sensing the chemical field, depositing and following food pheromone trails — and
+          the collective pattern emerges from those local choices.
+        </p>
+        <ul>
+          <li>One reproducible experiment: play, pause, step, reset and follow a single ant.</li>
+          <li>
+            Three guided exercises: read the first trail, change one parameter, follow one ant.
+          </li>
+          <li>
+            Run replay: versions, configuration, tick count, metrics and events are exported and
+            re-simulated.
+          </li>
+          <li>
+            Model assumptions and evidence, labelled as simulated, calculated and user-supplied.
+          </li>
+        </ul>
+        <p>
+          This is an educational agent model, not a validated reconstruction of a species. Ticks,
+          distance, food and chemical values are abstract and not species-calibrated; the numbers
+          shown are model outputs, not biological measurements, and a bright trail does not prove a
+          shortest path.
+        </p>
+        <p>The interactive simulation itself requires JavaScript.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
