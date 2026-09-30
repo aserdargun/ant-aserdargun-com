@@ -1206,7 +1206,135 @@ button.term-help svg {
   width: 14px;
   height: 14px;
 }
+.evidence {
+  margin-top: 26px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 32px;
+}
+#evidence {
+  scroll-margin-top: 20px;
+}
+.evidence-heading {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: end;
+  gap: 45px;
+}
+.evidence-heading h2 {
+  margin: 10px 0 0;
+  font:
+    34px/1.15 Georgia,
+    'Times New Roman',
+    serif;
+  letter-spacing: -0.04em;
+}
+.evidence-heading p {
+  font-size: 13px;
+}
+.evidence-label,
+.evidence-fine {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 16px 0 0;
+}
+.evidence-fine {
+  font-family: var(--mono);
+  margin-top: 10px;
+}
+.evidence-table-wrap {
+  margin-top: 18px;
+  overflow-x: auto;
+}
+.evidence-table {
+  width: 100%;
+  border-collapse: collapse;
+  font: 12px/1.5 var(--mono);
+  white-space: nowrap;
+}
+.evidence-table th,
+.evidence-table td {
+  text-align: right;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.evidence-table thead th {
+  font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+.evidence-table th:first-child,
+.evidence-table td:first-child,
+.evidence-table th:nth-child(2),
+.evidence-table td:nth-child(2) {
+  text-align: left;
+}
+.evidence-review {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--muted);
+}
+.evidence-review p {
+  max-width: 850px;
+}
+.evidence-review ul {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 26px;
+}
+.evidence-review a,
+.evidence-notes a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 12px;
+  text-decoration: underline;
+  text-decoration-color: #8d9b86;
+  text-decoration-style: dotted;
+  text-underline-offset: 5px;
+}
+.evidence-review svg,
+.evidence-notes svg {
+  width: 14px;
+  height: 14px;
+}
+.evidence-notes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.evidence-notes h3 {
+  font-size: 15px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.evidence-notes p {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.evidence-notes ol {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.6;
+}
 @media (max-width: 1050px) {
+  .evidence-heading,
+  .evidence-notes {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
   .learning-heading {
     grid-template-columns: 1fr;
     gap: 14px;
@@ -1251,6 +1379,10 @@ button.term-help svg {
     font-size: 25px;
   }
   .learning-guide {
+    padding: 22px;
+    margin-top: 18px;
+  }
+  .evidence {
     padding: 22px;
     margin-top: 18px;
   }

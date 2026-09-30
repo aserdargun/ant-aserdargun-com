@@ -11,6 +11,7 @@ import { Parameters } from './Parameters';
 import { Inspectors } from './Inspectors';
 import { Controls } from './Controls';
 import { Methodology } from './Methodology';
+import { Evidence } from './Evidence';
 import { TermHelp, TermHelpProvider } from './TermHelp';
 import { LearningGuide } from './LearningGuide';
 import { learningCopy } from './learning';
@@ -222,6 +223,7 @@ export default function App() {
           </span>
         </section>
         <LearningGuide language={language} initialLesson={route.lesson} />
+        <Evidence language={language} copy={t} />
         <LabShell manifest={manifest} experiment={experiments[0]} locale={language}>
           <p>
             {language === 'en'
