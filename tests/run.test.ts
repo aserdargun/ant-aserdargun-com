@@ -42,6 +42,27 @@ it('exported run reproduces all scientific state and rejects incompatible versio
   expect(() => parseRun(record)).toThrow('unsupported');
 });
 
+it('recomputes a hand-edited run instead of trusting the metrics and events it asserts', () => {
+  const source = new Simulation(defaultConfig());
+  source.stepMany(600);
+  const record = JSON.parse(JSON.stringify(source.exportRun()));
+  const run = parseRun(record);
+  const truth = new Simulation(run.config);
+  truth.stepMany(run.tickCount);
+  const replayed = { ...record.metrics };
+  // Outcome assertions a user can edit by hand must never reach the colony.
+  record.metrics.delivered = 999999;
+  record.metrics.firstDiscoveryTick = 1;
+  record.metrics.tick = 424242;
+  record.events = [{ tick: 0, type: 'delivery', antId: 999 }];
+  const runner = new Runner();
+  runner.command({ type: 'import', data: record });
+  runner.advance(run.tickCount);
+  expect(runner.simulation.metrics()).toEqual(truth.metrics());
+  expect(runner.simulation.metrics().delivered).toBe(replayed.delivered);
+  expect(runner.simulation.snapshot().events).toEqual(truth.snapshot().events);
+});
+
 it('validates configuration and import bounds before allocation or replay', () => {
   for (const seed of [-1, 0.4, NaN, 2 ** 32])
     expect(() => parseConfig({ ...defaultConfig(), seed })).toThrow();
