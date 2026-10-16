@@ -132,6 +132,40 @@ test('all glossary dialogs, lesson answers and narrow layouts preserve a paused 
   expect(errors).toEqual([]);
 });
 
+test('every lesson destination link lands on the control it names, in both languages', async ({
+  page,
+}) => {
+  await page.goto('/');
+  // A well-formed "#id" is not enough: the id has to exist in the rendered app
+  // and the click has to move the reader there, in either language.
+  const destinations = new Map<string, string[]>();
+  for (const language of ['EN', 'TR']) {
+    await page.getByRole('button', { name: language, exact: true }).click();
+    const lessons = page.locator('.lesson-picker button');
+    const count = await lessons.count();
+    expect(count).toBe(3);
+    for (let index = 0; index < count; index += 1) {
+      await lessons.nth(index).click();
+      const action = page.locator('.lesson-action');
+      const href = await action.getAttribute('href');
+      expect(href).toMatch(/^#[a-z][a-z0-9-]*$/);
+      const target = href as string;
+      destinations.set(target, [...(destinations.get(target) ?? []), language]);
+      await expect(page.locator(target)).toBeVisible();
+      await action.click();
+      const arrived = await page.locator(target).evaluate((el) => {
+        const box = el.getBoundingClientRect();
+        return box.width > 0 && box.height > 0 && box.bottom > 0 && box.top < window.innerHeight;
+      });
+      expect(arrived).toBe(true);
+    }
+  }
+  // Three exercises, three distinct destinations, and a Turkish reader is sent
+  // to exactly where an English reader is sent.
+  expect(destinations.size).toBe(3);
+  for (const reached of destinations.values()) expect(reached).toEqual(['EN', 'TR']);
+});
+
 test('keyboard camera controls redraw a paused world without changing the experiment', async ({
   page,
 }) => {
